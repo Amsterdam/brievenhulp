@@ -1,0 +1,690 @@
+<!doctype html>
+
+<!--
+   -  Copyright (C) 2016 X Gemeente
+   -                     X Amsterdam
+   -                     X Onderzoek, Informatie en Statistiek
+   -
+   -  This Source Code Form is subject to the terms of the Mozilla Public
+   -  License, v. 2.0. If a copy of the MPL was not distributed with this
+   -  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+   -->
+
+<html lang="{{ app.request.locale }}" data-decorator="add-handlers add-service-worker add-debugger">
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}Snap de Brief{% endblock %}</title>
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="theme-color" content="#0098CD">
+        <link rel="shortcut icon" href="/favicon.ico">
+        <link href="/apple-touch-icon.png" rel="icon" sizes="898x898">
+        <link href="/apple-touch-icon-152x152.png" rel="icon" sizes="152x152">
+        <link href="/apple-touch-icon.png" rel="apple-touch-icon">
+        <link href="/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+        <link rel="manifest" href="/manifest.json">
+        <meta name="application-name" content="Snap de Brief">
+        <meta name="msapplication-TileColor" content="#0098CD">
+        <meta name="msapplication-TileImage" content="/apple-touch-icon.png">
+        {% block metadata %}{% endblock %}
+        <meta property="og:image" content="/apple-touch-icon.png">
+        <style>
+        html, body, h1, h2, h3, h4, p, ol, ul, li, form, fieldset, legend { margin: 0; padding: 0; }
+        html, body { background: #fff; color: #666; }
+        body { font-family: sans-serif; max-width: 26em; margin: 0 auto; line-height: 26px; }
+        h1 { font-size: 36px; font-size: 2.2rem; text-align: center; color: #fff; }
+            h1 a { text-decoration: none; }
+        h2 { margin: 0 0 16px; margin: 0 0 1rem; }
+            h2 i { font-style: normal; }
+        p + h2 { margin-top: 32px; margin-top: 2rem; }
+        h3 { margin: 16px 0 8px; margin: 1rem 0 .5rem; }
+        h4 { margin: 16px 0 0; margin: 1rem 0 0; font-size: 100%; }
+        a { color: #fff; text-decoration: underline; }
+        a:hover, a:focus { text-decoration: none; }
+        a:active:hover { position: relative; top: 1px; }
+        img { display: block; max-width: 100%; height: auto; border: none; -ms-interpolation-mode: bicubic; }
+        .button { display: block; padding: 13px 16px; padding: .8rem 1rem; text-decoration: none; text-align: center; border-radius: .5rem; font-size: 19px; font-size: 1.2rem; color: #fff; cursor: pointer; border: 1px solid rgba(0, 0, 0, .2); border-radius: 10px; background-image: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .3)); background-origin: border-box; box-shadow: 0 2px 3px rgba(0, 0, 0, .2), 0 3px 7px rgba(255, 255, 255, .4) inset; background: #38b4e4; font-size: 20px; font-weight: bold; white-space: nowrap; transition: all .2s ease-out;}
+        .button:active:hover { position: relative; top: 1px; }
+        span.button { margin: 0 auto; width: 10em; }
+            span.button span { display: inline; }
+            .button img { display: inline; margin-left: .2em; vertical-align: middle; }
+            .button svg { display: inline; width: 24px; height: 24px; margin-right: .2em; vertical-align: top; fill: #fff; }
+        .section { position: relative; box-sizing: border-box; padding: 32px 24px; padding: 2rem 1.5rem; }
+        .section.proceed::after { content: ''; position: absolute; z-index: 1; left: 50%; bottom: -39px; width: 0; height: 0; margin-left: -30px; border-right: 30px solid transparent; border-left: 30px solid transparent; border-bottom: 20px solid transparent; background: transparent; }
+            .section ul, .section ol { margin: 0 0 0 2em; }
+            .content p, .content ul, .content ol { margin-bottom: .5em; }
+            .section a { color: #0098CD; }
+            .section .button { color: #fff; }
+        .content .important { margin: 0; list-style: none; }
+            .content .important li { position: relative; margin: 16px 0; margin: 1rem 0; padding-left: 24px; padding-left: 1.5rem; }
+            .content .important li::before { content: '✓'; position: absolute; left: 0; top: .1em; font-size: 1.4em; color: background: #52C3EF; }
+        .language { padding: 16px .5em; padding: 1rem .5em; text-align: center; }
+            .language img { display: inline-block; margin-right: .3em; }
+            .language span, .language strong { display: inline-block; width: 8em; margin: 0 .5em; }
+            .language a { padding: .5em; }
+        .language.proceed::after { border-top: 20px solid #fff; }
+        .intro { z-index: 2; padding: 32px 16px; padding: 2rem 1rem; /*background: #0098CD;*/ background: #38b4e4; color: #fff; }
+        .intro.proceed::after { border-top: 20px solid #38b4e4; }
+            .intro p { margin: 16px auto 0; margin: 1rem auto; text-align: center; font-size: 1.3em; line-height: 1.4; }
+            .intro a { color: #fff; }
+            .intro > a { position: absolute; bottom: .5em; right: .5em; opacity: .7; }
+            .intro > a:active:hover { position: absolute; top: auto; bottom: .45em; }
+        .other { border-top: 1px solid #D6D6D6; }
+            .other h2 { font-size: 110%; }
+        .footer { background: #52C3EF; color: #fff; }
+            .footer ul { margin: 0 0 16px; margin: 0 0 1rem; list-style: none; }
+                .footer li { margin: 0 0 16px; margin: 0 0 1rem; }
+            .footer a { color: #fff; }
+        .section .back { max-width: 70%; margin: 32px auto 0; margin: 2rem auto 0; }
+        .disclaimer { font-size: 70%; line-height: 20px; }
+            .disclaimer p { margin: 0 0 8px; margin: 0 0 .5rem; }
+        fieldset { border: none; }
+        label { position: relative; display: block; }
+            label span { display: block; margin: 0 0 8px; margin: 0 0 .5rem; }
+                label span span { margin: 0; }
+        input[type="checkbox"], input[type="radio"], input + label { display: inline-block; width: auto; cursor: pointer; }
+        input[type="checkbox"], input[type="radio"] { font-size: 100%; margin: 0; padding: 0; }
+        input + label { flex: 1; padding: 16px 8px; padding: 1rem .5rem; }
+        input[type="text"], input[type="email"], input[type="tel"], textarea, button { box-sizing: border-box; box-sizing: border-box; width: 100%; padding: 8px; padding: .5rem; border: none; font-family: inherit; font-size: 140%; -webkit-appearance: none; }
+        input[type="text"], input[type="email"], input[type="tel"], textarea { border: 1px solid #aaa; box-shadow: 0 2px 2px rgba(0, 0, 0, .2) inset; }
+        input[type="tel"] { font-size: 1.6em; letter-spacing: .3em; text-align: center; }
+        .error input[type="text"], .error input[type="email"], .error input[type="tel"], .error textarea { border-color: #f00; }
+        @-webkit-keyframes wiggle {
+            25% { -webkit-transform: translate(-10px); transform: translate(-10px); }
+            75% { -webkit-transform: translate(10px); transform: translate(10px); }
+        }
+        @keyframes wiggle {
+            25% { -webkit-transform: translate(-10px); transform: translate(-10px); }
+            75% { -webkit-transform: translate(10px); transform: translate(10px); }
+        }
+        input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, textarea:focus { border-color: #0098CD; outline: none; }
+        input[type="tel"].invalid-tel, input[type="tel"].invalid-tel:focus { border-color: #f00; }
+        input[type="file"] { position: absolute; left: 0; bottom: 120px; width: 100%; opacity: 0; z-index: -1; }
+        textarea { resize: vertical; overflow: auto; }
+        form.section { background: #eee; }
+            .call-to-action { position: relative; z-index: 2; width: 100%; margin: 16px 0 0; margin: 1rem 0 0; -webkit-transition: .5s all ease-out; transition: .5s all ease-out; white-space: nowrap; }
+            .is-invalid .call-to-action { -webkit-animation: wiggle .2s 3 alternate; animation: wiggle .2s 3 alternate; }
+            .is-submitting .call-to-action { margin: 16px auto 0; margin: 1rem auto 0; }
+                .is-submitting .call-to-action .button { background: transparent; color: #666; border-color: transparent; box-shadow: none; outline: none; pointer-events: none; }
+                .is-failed .call-to-action .button { color: #f00; }
+        .step-1 { background-color: #E7F3FB; }
+        .step-1.proceed::after { border-top: 20px solid #E7F3FB; }
+        .step-2 { background-color: #F8FCFC; }
+        .step-2.proceed::after { border-top: 20px solid #F8FCFC; }
+        .editor { display: block; position: relative; margin: 0; }
+            .editor img { max-height: 150px; margin: 0 auto 16px; margin: 0 auto 1rem; box-sizing: border-box; border: 3px dashed #999; padding: 16px; padding: 1rem; background: #F8F9FC; }
+            .editor span { display: none; }
+            .editor.is-active img { width: 100%; max-height: none; margin: 16px auto 32px; margin: 1rem auto 2rem; border: 3px solid #fff; box-shadow: 0 3px 9px rgba(0, 0, 0, .5); padding: 0; }
+            .editor button { position: absolute; top: 16px; top: 1rem; right: 16px; right: 1rem; width: 44px; height: 44px; background: #fff; border-radius: 50%; }
+            .editor.is-file span { display: block; margin: 0 0 16px; margin: 0 0 1rem; text-align: center; word-break: break-all; }
+            .editor.is-file img { border: 3px solid #149718; }
+        .step { margin: 0 0 16px; margin: 0 0 1rem; }
+        .last-step { position: relative; }
+        .heading { position: relative; padding-left: 2em; font-size: 19px; font-size: 1.2rem; }
+            .error .heading { color: #f00; }
+            .heading .number { position: absolute; left: 0; top: -.2em; display: inline-block; width: 1.6em; line-height: 1.6em; border-radius: 50%; background: #38b4e4; color: #fff; text-align: center; font-weight: normal; }
+            .error .number { background: #f00; }
+        .contacts { }
+            .contact { position: relative; padding: 0 0 0 120px; margin: 0 0 16px; margin: 0 0 1rem; min-height: 70px; }
+                .contact img { position: absolute; top: 0; left: 0; width: 100px; border: none; background: #fff; }
+                .contact p { font-size: 90%; line-height: 1.3; }
+        .loader { position: absolute; top: 50%; left: 50%; margin: -19px 0 0 112px; margin: -1.2rem 0 0 7rem; width: 32px; width: 2rem; height: 32px; height: 2rem; border: .2rem solid #0098CD; border-left: .2rem solid #fff; border-radius: 50%; text-indent: 100%; overflow: hidden; opacity: 0; transition: opacity 2s ease-out; -ms-transform: translateZ(0); -webkit-transform: translateZ(0); transform: translateZ(0); }
+            .is-submitting .loader { -webkit-animation: loader 1.1s infinite linear; animation: loader 1.1s infinite linear; opacity: 1; }
+            .is-failed .loader { display: none; }
+            .supports-progress .loader { -webkit-animation: none; animation: none; left: 0; top: 0; margin: 0; border-radius: 0; width: 0; min-width: 0; background: #0098CD; bottom: 0; height: auto; border: none; transition: width .2s ease-out, min-width .2s ease-out; }
+        @-webkit-keyframes loader {
+            0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+        @keyframes loader {
+            0% { -webkit-transform: rotate(0deg); transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); transform: rotate(360deg); }
+        }
+        .done { text-align: center; padding: 32px 0; padding: 2rem 0; }
+            .done h2::before { content: '✓'; display: block; line-height: 64px; line-height: 4rem; width: 64px; width: 4rem; margin: 0 auto 32px; margin: 0 auto 2rem; border-radius: 50%; background: #149718; color: #fff; font-size: 1.6em; font-weight: bold; }
+            .done p { max-width: 70%; margin: 16px auto; margin: 1rem auto; font-size: 1.2em; }
+                .done .button { background-color: #149718; color: #fff; }
+        .done .number { margin: 16px auto 48px; margin: 1rem auto 3rem; letter-spacing: .05em; }
+        .debug { position: fixed; z-index: 10; overflow: auto; top: 0; left: 0; right: 0; background: rgba(255, 255, 255, .5); font-size: .8em; height: 3em; border-bottom: 1px solid #000; font-family: monospace; line-height: 1.2; resize: vertical; }
+            .debug span { display: block; }
+        </style>
+    </head>
+    <body>
+
+        <div id="main">
+            {% block body %}{% endblock %}
+        </div>
+
+        <div class="section footer">
+            <ul>
+                <li><a href="{{ path('gemeenteamsterdam_brievenhulp_default_faq') }}">{{ 'Hoe werkt het?'|trans }}</a></li>
+                <li><a href="{{ path('gemeenteamsterdam_brievenhulp_default_disclaimer') }}">{{ 'Disclaimer & privacyverklaring'|trans }}</a></li>
+            </ul>
+            <p>© Gemeente Amsterdam</p>
+        </div>
+
+        <script>
+            var _paq = _paq || [];
+            {% if piwik_site_id %}
+            _paq.push(['setDomains', ['*.{{ app.request.host }}']]);
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            {% endif %}
+        </script>
+
+        {% if not hide_script|default(false) %}
+        <script>
+            (function () {
+
+                'use strict';
+
+                window.sdb = {
+
+                    debug: false,
+                    imageResized: false,
+
+                    handlers: {
+
+                        'upload-form': function(ev) {
+                            var form = this;
+                            sdb.trackEvent('Form', 'Submit');
+                            if (form.checkValidity) {
+                                if (!form.checkValidity() || !sdb.isValidTel(document.getElementById('method-sms').value)) {
+                                    sdb.addClass(form, 'is-invalid');
+                                    setTimeout(function() {
+                                        var inputs = form.querySelectorAll('input:invalid, .invalid-tel');
+                                        sdb.removeClass(form, 'is-invalid');
+                                        sdb.smoothScrollTo(inputs[0].parentNode, function() {
+                                            for (var i = 0; i < inputs.length; i++) {
+                                                sdb.addClass(inputs[i].parentNode, 'error');
+                                                var label = inputs[i].parentNode.querySelector('[data-error]');
+                                                if (label) {
+                                                    label.innerHTML = label.getAttribute('data-error');
+                                                }
+                                            }
+                                            sdb.focus(inputs[0]);
+                                        });
+                                    }, 1000);
+                                    sdb.trackEvent('Form', 'Validate-Invalid', document.getElementById('method-sms').value);
+                                    sdb.preventDefault(ev);
+                                    return false;
+                                }
+                            } else {
+                                sdb.trackEvent('Form', 'Validate-Unsupported');
+                            }
+                            if (window.ProgressEvent) {
+                                sdb.addClass(form, 'supports-progress');
+                            }
+                            sdb.addClass(form, 'is-submitting');
+                            setTimeout(function() {
+                                document.getElementById('loader').style.minWidth = '10%';
+                            }, 10);
+                            var previousCaption = document.getElementById('submit-button').innerHTML;
+                            document.getElementById('submit-button').innerHTML = document.getElementById('submit-button').getAttribute('data-progress');
+                            if (window.XMLHttpRequest && window.FormData) {
+                                sdb.trackEvent('Form', 'Send-XMLHttpRequest');
+                                var data;
+                                if (sdb.imageResized) {
+                                    document.getElementById('file').disabled = true;
+                                    data = new FormData(form);
+                                    data.append(document.getElementById('file').name, sdb.blob);
+                                } else {
+                                    data = new FormData(form);
+                                }
+                                var req = new XMLHttpRequest();
+                                req.open(form.method, form.action || location.href, true);
+                                req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+                                if (req.upload) {
+                                    var firstProgress = true;
+                                    var loader = document.getElementById('loader');
+                                    var cta = document.getElementById('call-to-action');
+                                    req.upload.onprogress = function(progressEvent) {
+                                        if (progressEvent.lengthComputable) {
+                                            var progress = (progressEvent.loaded / progressEvent.total);
+                                            cta.style.opacity = (1 - progress);
+                                            loader.style.width = (100 * progress) + '%';
+                                        }
+                                    };
+                                }
+                                req.onload = function() {
+                                    if (req.status == 200) {
+                                        var main = document.getElementById('main');
+                                        main.innerHTML = req.responseText;
+                                        window.scrollTo(0, 0);
+                                        sdb.run(main);
+                                        sdb.focus(main);
+                                    } else {
+                                        sdb.log('Error: ' + req.status);
+                                        sdb.trackEvent('Form', 'Send-Error', req.status);
+                                        document.getElementById('submit-button').innerHTML = document.getElementById('submit-button').getAttribute('data-failed')
+                                        sdb.addClass(form, 'is-failed');
+                                        setTimeout(function() {
+                                            sdb.removeClass(form, 'is-submitting');
+                                            sdb.removeClass(form, 'is-failed');
+                                            document.getElementById('submit-button').innerHTML = previousCaption;
+                                        }, 2000);
+                                    }
+                                };
+                                req.send(data);
+                                sdb.preventDefault(ev);
+                            } else {
+                                sdb.trackEvent('Form', 'Send-Normal');
+                            }
+                        }
+
+                    },
+
+                    decorators: {
+
+                        'add-handlers': function() {
+                            var handle = function(handlers, target, ev) {
+                                for (var i = 0; i < handlers.length; i++) {
+                                    if (sdb.handlers[handlers[i]]) {
+                                        sdb.handlers[handlers[i]].call(target, ev);
+                                    } else {
+                                        sdb.log('Missing handler: ' + handlers[i]);
+                                    }
+                                }
+                            };
+                            sdb.addEvent(this, 'click', function(ev) {
+                                var target = ev && ev.target;
+                                if (target && target.tagName) {
+                                    if (target.tagName != 'A' && target.tagName != 'BUTTON' && target.tagName != 'INPUT') {
+                                        // For nested anchors, walk up a few elements
+                                        for (var i = 0; i < 2; i++) {
+                                            if (target.parentNode) {
+                                                target = target.parentNode;
+                                            }
+                                            if (target.tagName == 'A' || target.tagName == 'INPUT') {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if ((target.tagName == 'A' || target.tagName == 'BUTTON' || target.tagName == 'INPUT') && target.getAttribute('data-handler')) {
+                                        var handlers = target.getAttribute('data-handler').split(/\s+/);
+                                        if (target.tagName == 'A' && (ev.metaKey || ev.shiftKey || ev.ctrlKey || ev.altKey)) {
+                                            return;
+                                        }
+                                        handle(handlers, target, ev);
+                                    }
+                                }
+                            });
+                            sdb.addEvent(this, 'submit', function(ev) {
+                                var target = ev && ev.target;
+                                if (target && target.tagName && target.tagName == 'FORM' && target.getAttribute('data-handler')) {
+                                    handle(target.getAttribute('data-handler').split(/\s+/), target, ev);
+                                }
+                            });
+                        },
+
+                        'add-service-worker': function() {
+                            if ('serviceWorker' in navigator) {
+                                // Register the ServiceWorker
+                                navigator.serviceWorker.register('/sw.js', {
+                                    scope: '/'
+                                }).then(function(registration) {
+                                    // Offline available
+                                });
+                            }
+                        },
+
+                        'add-debugger': function() {
+                            if (location.search && location.search == '?debug') {
+                                var div = document.createElement('div');
+                                div.className = 'debug';
+                                div.id = 'debug';
+                                document.body.appendChild(div);
+                                sdb.debug = true;
+                            }
+                        },
+
+                        'check-validity': function() {
+                            if (this.checkValidity) {
+                                sdb.addEvent(this, 'blur', function() {
+                                    if (this.checkValidity()) {
+                                        sdb.removeClass(this.parentNode, 'error');
+                                    }
+                                })
+                                sdb.addEvent(this, 'input', function() {
+                                    if (this.checkValidity()) {
+                                        sdb.removeClass(this.parentNode, 'error');
+                                    }
+                                });
+                            }
+                        },
+
+                        'validate-input': function() {
+                            sdb.addEvent(this, 'input', function() {
+                                if (sdb.isValidTel(this.value)) {
+                                    sdb.removeClass(this, 'invalid-tel');
+                                } else {
+                                    sdb.addClass(this, 'invalid-tel');
+                                }
+                            });
+                        },
+
+                        'scroll-to-me': function() {
+                            var el = this;
+                            sdb.smoothScrollTo(el, function() {
+                                sdb.focus(el);
+                            });
+                        },
+
+                        'track-event': function() {
+                            sdb.trackEvent(this.getAttribute('data-category'), this.getAttribute('data-action'), this.getAttribute('data-name') || undefined, this.getAttribute('data-value') || undefined);
+                        },
+
+                        'enhance-file': function() {
+                            var input;
+                            var previousCaption;
+                            var hasImagePreview = false;
+                            var img = document.getElementById('img-preview');
+                            sdb.addEvent(img, 'click', function(ev) {
+                                if (hasImagePreview) {
+                                    sdb.preventDefault(ev);
+                                }
+                            });
+                            sdb.addEvent(this, 'change', function(ev) {
+                                var editor = document.getElementById('editor');
+                                var btn = document.getElementById('take-photo');
+                                input = this;
+                                sdb.imageResized = false;
+                                previousCaption = btn.innerHTML;
+                                sdb.trackEvent('File', 'Select');
+                                if (input.files && input.files[0]) {
+                                    sdb.removeClass(input.parentNode, 'error');
+                                    if (input.files[0].type.substr(0, 6) == 'image/') {
+                                        // Feature detect before compression
+                                        var support = (window.XMLHttpRequest && window.FormData && document.createElement('canvas').toDataURL('image/jpeg').indexOf('image/jpeg') !== -1);
+                                        if (support) {
+                                            btn.innerHTML = btn.getAttribute('data-working');
+                                            sdb.log('Has compression');
+                                            var originalSize = this.files[0].size;
+                                            sdb.removeClass(editor, 'is-file');
+                                            loadImage.parseMetaData(input.files[0], function(data) {
+                                                var options = {maxWidth: 1000, canvas: true};
+                                                if (data.imageHead && data.exif && data.exif[0x0112]) {
+                                                    options.orientation = data.exif[0x0112];
+                                                    sdb.log('Orientation: ' + options.orientation);
+                                                }
+                                                loadImage(input.files[0], function(canvas) {
+                                                    canvas.toBlob(function(blob) {
+                                                        if (!window.URL && window.webkitURL) {
+                                                            window.URL = window.webkitURL;
+                                                        }
+                                                        sdb.blob = blob;
+                                                        sdb.log('Original size: ' + Math.round(originalSize / 1024) + 'KB, optimized size: ' + Math.round(blob.size / 1024) + 'KB (' + Math.round(originalSize/blob.size) + 'x smaller)');
+                                                        sdb.trackEvent('Image', 'Compress', Math.round(originalSize / 1024) + '-' + Math.round(blob.size / 1024));
+                                                        document.getElementById('img-preview').src = window.URL.createObjectURL(blob);
+                                                        sdb.addClass(editor, 'is-active');
+                                                        sdb.imageResized = true;
+                                                        btn.innerHTML = btn.getAttribute('data-change');
+                                                        hasImagePreview = true;
+                                                        setTimeout(function() {
+                                                            sdb.smoothScrollTo(input, function() {
+                                                                sdb.focus(document.getElementById('method-sms'));
+                                                            });
+                                                        }, 500);
+                                                    }, 'image/jpeg', .6);
+                                                }, options);
+                                            });
+                                        } else {
+                                            sdb.log('No compression');
+                                            loadImage(input.files[0], function(result) {
+                                                img.src = result.src;
+                                                sdb.removeClass(editor, 'is-file');
+                                                sdb.addClass(editor, 'is-active');
+                                                btn.innerHTML = btn.getAttribute('data-change');
+                                                hasImagePreview = false;
+                                                setTimeout(function() {
+                                                    sdb.smoothScrollTo(input, function() {
+                                                        sdb.focus(document.getElementById('method-sms'));
+                                                    });
+                                                }, 500);
+                                            }, {noRevoke: true});
+                                        }
+                                    } else {
+                                        sdb.addClass(editor, 'is-file');
+                                        sdb.removeClass(editor, 'is-active');
+                                        img.src = img.getAttribute('data-was');
+                                        document.getElementById('file-preview').innerHTML = input.files[0].name + ' (' + Math.round(input.files[0].size / 1024) + ' KB)';
+                                        btn.innerHTML = btn.getAttribute('data-change');
+                                        hasImagePreview = false;
+                                        setTimeout(function() {
+                                            sdb.smoothScrollTo(document.getElementById('file'), function() {
+                                                sdb.focus(document.getElementById('method-sms'));
+                                            });
+                                        }, 500);
+                                    }
+                                } else if (input.value) {
+                                    sdb.log('No .files, has .value: ' + input.value);
+                                    var value = input.value.replace('C:\\fakepath\\', '');
+                                    img.src = img.getAttribute('data-was');
+                                    sdb.removeClass(editor, 'is-active');
+                                    sdb.addClass(editor, 'is-file');
+                                    try {
+                                        value += ' (' + Math.round((new ActiveXObject('Scripting.FileSystemObject')).getFile(input.value).size / 1024) + ' KB)';
+                                    } catch(e) {}
+                                    document.getElementById('file-preview').innerHTML = value;
+                                    btn.innerHTML = btn.getAttribute('data-change');
+                                    hasImagePreview = false;
+                                    sdb.smoothScrollTo(document.getElementById('file'), function() {
+                                        sdb.focus(document.getElementById('method-sms'));
+                                    });
+                                } else {
+                                    sdb.log('No .files, no .value');
+                                    img.src = img.getAttribute('data-was');
+                                    sdb.removeClass(editor, 'is-active');
+                                    sdb.removeClass(editor, 'is-file');
+                                    btn.innerHTML = previousCaption;
+                                    hasImagePreview = false;
+                                }
+                            });
+                            if (window.FileList) {
+                                sdb.importScript('/lib/image.min.js');
+                            }
+                        }
+
+                    },
+
+                    log: function(par) {
+                        if (sdb.debug) {
+                            var text = document.createElement('span');
+                            text.innerHTML = par;
+                            document.getElementById('debug').appendChild(text);
+                        }
+                        if (console && console.log) {
+                            console.log(par);
+                        }
+                    },
+
+                    focus: function(el) {
+                        el.focus();
+                    },
+
+                    addEvent: function(el, ev, func) {
+                        if (el.addEventListener) {
+                            el.addEventListener(ev, func);
+                        } else if (el.attachEvent) {
+                            el.attachEvent(ev, func);
+                        } else {
+                            el['on' + ev] = func;
+                        }
+                    },
+
+                    removeEvent: function(el, ev, func) {
+                        if (el.removeEventListener) {
+                            el.removeEventListener(ev, func);
+                        } else if (el.detachEvent) {
+                            el.detachEvent(ev, func);
+                        } else {
+                            el['on' + ev] = function() {};
+                        }
+                    },
+
+                    preventDefault: function(ev) {
+                        if (ev.preventDefault) {
+                            ev.preventDefault();
+                        } else {
+                            ev.returnValue = false;
+                        }
+                    },
+
+                    addClass: function(el, className) {
+                        if (el.classList) {
+                            el.classList.add(className);
+                        } else if (!sdb.containsClass(el, className)) {
+                            el.className += ' ' + className;
+                        }
+                    },
+
+                    removeClass: function(el, className) {
+                        if (el.classList) {
+                            el.classList.remove(className);
+                        } else if (sdb.containsClass(el, className)) {
+                            el.className = el.className.replace(new RegExp('(?:^|\\s)' + className + '(?!\\S)', 'g'), '');
+                        }
+                    },
+
+                    toggleClass: function(el, className) {
+                        if (el.classList) {
+                            el.classList.toggle(className);
+                        } else {
+                            if (sdb.containsClass(el, className)) {
+                                sdb.removeClass(el, className);
+                            } else {
+                                sdb.addClass(el, className);
+                            }
+                        }
+                    },
+
+                    containsClass: function(el, className) {
+                        if (el.classList) {
+                            return el.classList.contains(className);
+                        } else {
+                            return el.className.match(new RegExp('(\\s|^)' + className + '(\\s|$)'));
+                        }
+                    },
+
+                    importScript: function(src) {
+                        var s = document.createElement('script');
+                        s.src = src;
+                        s.async = true;
+                        document.getElementsByTagName('head')[0].appendChild(s);
+                    },
+
+                    isValidTel: function(tel) {
+                        tel = tel.replace(/ |-|\(|\)/g, '');
+                        var replaces = {
+                            '01': '+311',
+                            '02': '+312',
+                            '03': '+313',
+                            '04': '+314',
+                            '05': '+315',
+                            '06': '+316',
+                            '07': '+317',
+                            '08': '+318',
+                            '09': '+319',
+                            '+316': '+316',
+                            '+3106': '+316',
+                            '003106': '+316',
+                        };
+                        for (var key in replaces) {
+                            if (tel.substr(0, key.length) === key) {
+                                tel = replaces[key] + tel.substr(key.length);
+                            }
+                        }
+                        return tel.length == 12;
+                    },
+
+                    smoothScrollTo: function(el, callback) {
+                        var scrollTo = el.offsetTop;
+                        var thisEl = el;
+                        while (thisEl.offsetParent && (thisEl.offsetParent != document.body)) {
+                            thisEl = thisEl.offsetParent;
+                            scrollTo += thisEl.offsetTop;
+                        }
+                        if (sdb.scrollInterval) {
+                            clearInterval(sdb.scrollInterval);
+                        }
+                        var getCurrentTop = function() {
+                            if (document.body && document.body.scrollTop) {
+                                return document.body.scrollTop;
+                            }
+                            if (document.documentElement && document.documentElement.scrollTop) {
+                                return document.documentElement.scrollTop;
+                            }
+                            if (window.pageYOffset) {
+                                return window.pageYOffset;
+                            }
+                            return 0;
+                        };
+                        var step = parseInt((scrollTo - getCurrentTop()) / 25);
+                        var iterations = 0;
+                        sdb.scrollInterval = setInterval(function() {
+                            iterations++;
+                            var oldTop = getCurrentTop();
+                            var isAboveOld = (oldTop < scrollTo);
+                            window.scrollBy(0, step);
+                            var newTop = getCurrentTop();
+                            var isAboveNew = (newTop < scrollTo);
+                            if (iterations > 100 || isAboveOld != isAboveNew || oldTop == newTop) {
+                                window.scrollTo(0, scrollTo);
+                                clearInterval(sdb.scrollInterval);
+                                if (callback) {
+                                    setTimeout(function() {
+                                        callback();
+                                    }, 100);
+                                }
+                            }
+                        }, 20);
+                    },
+
+                    trackEvent: function(category, action, name, value) {
+                        _paq.push(['trackEvent', category, action, name, value]);
+                        sdb.log(['trackEvent', category, action, name, value]);
+                    },
+
+                    run: function(context) {
+                        var i, j, decorators, element, context = context || document, elements = context.querySelectorAll('[data-decorator]');
+                        for (i = 0; i < elements.length; i++) {
+                            element = elements[i];
+                            decorators = element.getAttribute('data-decorator').split(/\s+/);
+                            for (j = 0; j < decorators.length; j++) {
+                                if (sdb.decorators[decorators[j]]) {
+                                    sdb.decorators[decorators[j]].call(element);
+                                } else {
+                                    sdb.log('Missing decorator: ' + decorators[j]);
+                                }
+                            }
+                        }
+                    }
+
+                };
+
+                if (window.sdb && 'querySelectorAll' in document) {
+                    sdb.run();
+                }
+
+            }());
+        </script>
+        {% endif %}
+
+        <!-- Piwik -->
+        <script type="text/javascript">
+            var _paq = _paq || [];
+            _paq.push(['trackPageView']);
+            _paq.push(['enableLinkTracking']);
+            (function() {
+                var u="//piwik.data.amsterdam.nl/";
+                _paq.push(['setTrackerUrl', u+'piwik.php']);
+                _paq.push(['setSiteId', '4']);
+                var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+                g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+            })();
+        </script>
+        <!-- End Piwik Code -->
+        <noscript><img src="//piwik.data.amsterdam.nl/piwik.php?idsite=4" alt=""></noscript>
+    </body>
+</html>

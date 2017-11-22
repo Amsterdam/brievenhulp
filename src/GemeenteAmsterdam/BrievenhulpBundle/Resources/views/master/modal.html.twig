@@ -1,0 +1,12 @@
+{% if app.session.flashbag.has('info') %}
+<section class="flash">
+    <ul>
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <li>{{ flashMessage }}</li>
+    {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+{% block modal %}
+{% endblock %}

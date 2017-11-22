@@ -1,0 +1,27 @@
+{% extends "GemeenteAmsterdamBrievenhulpBundle:master:default.html.twig" %}
+
+
+{% block body %}
+
+    <div class="section intro proceed">
+        <h1><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" lang="nl">Snap de Brief</a></h1>
+    </div>
+
+    <div class="section">
+        {% if statusCode == 404 %}
+            <h2>Pagina niet gevonden (<code>404</code>)</h2>
+            <p>Helaas, de pagina die je probeert te bereiken, komt niet (meer) voor op deze website.</p>
+        {% elseif statusCode == 403 %}
+            <h2>Geen toegang</h2>
+            <p>Helaas, je hebt geen toegang tot deze pagina.</p>
+        {% elseif statusCode == 500 %}
+            <h2 lang="en">Oh, snap!</h2>
+            <p>Sorry, er ging iets mis aan onze kant.</p>
+        {% endif %}
+        {% if showException %}
+            <pre>{{ exception.message }}</pre>
+        {% endif %}
+        <p class="back"><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" class="button">Home</a></p>
+    </div>
+
+{% endblock %}

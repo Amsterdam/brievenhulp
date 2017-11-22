@@ -1,0 +1,7 @@
+{%- macro src(hulpvraag, size) -%}
+    {%- if hulpvraag.bestandsnaam|slice(-4) in ['.pdf', '.bin'] -%}
+        /img/file.png
+    {%- else -%}
+        {{ path('gemeenteamsterdam_brievenhulp_hulpverlener_openbrief', {'hulpvraagUuid': hulpvraag.uuid, 'size': size}) }}
+    {%- endif -%}
+{%- endmacro -%}

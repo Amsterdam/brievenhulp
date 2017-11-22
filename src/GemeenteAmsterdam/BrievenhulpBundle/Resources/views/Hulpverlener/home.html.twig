@@ -1,0 +1,86 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{%- import 'GemeenteAmsterdamBrievenhulpBundle:macros:image.html.twig' as image -%}
+
+{% block main %}
+<main class="wrapper">
+
+    <div class="hulpvragen-wrapper">
+        <section class="hulpvragen">
+        <h2 class="section-header">Openstaande brieven <span style="text-transform: none; font-weight: normal">voor&nbsp;{{ app.user.naam }}</span></h2>
+
+        {% if hulpvragen is not empty %}
+        <section class="fotorol">
+        {% for record in hulpvragen %}
+            {% set link %}{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}{% endset %}
+            <div class="polaroid">
+                <a href="{{ link }}">
+                    <h3>
+                        <span class="referentie">{% if null != record.referentie %}{{ record.referentie.id }}{% else %}&nbsp;&nbsp;{% endif %}</span>
+                        {% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.tijdstip.twig' with {'tijdstip': record.inkomstDatumtijd} %}
+                    </h3>
+                    <img src="{{ image.src(record, 'square') }}" alt="" class="foto-medium">
+                    <p class="telefoon-wrapper"><i class="telefoon"></i> {{ record.telefoon }}</p>
+                </a>
+            </div>
+        {% endfor %}
+        </section>
+        {% else %}
+            <p>Geen.</p>
+        {% endif %}
+
+
+    <h2 class="section-header">Afgehandelde brieven <span style="text-transform: none; font-weight: normal">door&nbsp;{{ app.user.naam }}</span></h2>
+
+    {% if hulpvragenAfgehandeld|length > 0 %}
+        <table class="table afgehandeld">
+            <tr>
+                <th>Referentie</th>
+                <th>Brief</th>
+                <th class="add-column">Datum ingediend</th>
+                <th class="add-column">Telefoonnummer</th>
+                <th class="add-column">Status</th>
+                <th>Details</th>
+            </tr>
+            {% for record in hulpvragenAfgehandeld %}
+                {% set link %}{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}{% endset %}
+                <tr>
+                    <td>{% if null != record.referentie %}<a href="{{ link }}"><span class="referentie">{{ record.referentie.id }}</span></a>{% else %}-{% endif %}</td>
+                    <td>
+                        <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}">
+                            <img src="{{ image.src(record, 'square') }}" alt="" class="foto-klein">
+                        </a>
+                    </td>
+                    <td class="add-column">{{ record.inkomstDatumtijd|date('d-m-Y') }}</b> om <b>{{ record.inkomstDatumtijd|date('H:i') }}</td>
+                    <td class="add-column">{{ record.telefoon }}</td>
+                    <td class="add-column">{% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.status.twig' with {'status': record.status} %}</td>
+                    <td><a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}">Details</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Geen</p>
+    {% endif %}
+        </section>
+    </div>
+
+        {#<nav class="paginering">
+            {%  if page > 1 %}<a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_home', {'page': page-1}) }}">← Vorige pagina</a>{% else %}{% endif %}
+            {%  if hulpvragenAfgehandeld %}<a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_home', {'page': page+1}) }}">Volgende pagina →</a>{% else %}{% endif %}
+        </nav>#}
+
+        <nav class="paginering">
+            <span class="totaal">Totaal: {{ hulpvragen|length }} brieven</span>
+
+            {% if page > 1 %}
+                <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_home', {'page': page - 1, 'sortColumn': sortColumn, 'sortDirection': sortDirection}) }}">← Vorige pagina</a>
+            {% endif %}
+            <span class="pagina">Pagina <b>{{ page }}</b> / <b>{{ numberOfPages }}</b></span>
+            {% if page < numberOfPages %}
+                <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_home', {'page': page + 1, 'sortColumn': sortColumn, 'sortDirection': sortDirection}) }}">Volgende pagina →</a>
+            {% endif %}
+        </nav>
+
+    </div>
+</main>
+{% endblock %}

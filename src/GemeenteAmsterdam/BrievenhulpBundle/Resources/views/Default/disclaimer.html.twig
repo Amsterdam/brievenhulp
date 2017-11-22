@@ -1,0 +1,119 @@
+{% extends "GemeenteAmsterdamBrievenhulpBundle:master:default.html.twig" %}
+{% set hide_script = true %}
+
+
+{%- block title -%}
+    {%- if app.request.locale == 'nl' -%}
+        Disclaimer en privacyverklaring - Snap de Brief
+    {%- else -%}
+        Disclaimer and privacy statement - Snap de Brief
+    {%- endif -%}
+{%- endblock -%}
+
+{% block metadata %}
+    {% if app.request.locale == 'nl' %}
+        <link rel="alternate" href="{{ path('gemeenteamsterdam_brievenhulp_default_disclaimer', {_locale: 'en'}) }}" hreflang="en">
+    {% else %}
+        <link rel="alternate" href="{{ path('gemeenteamsterdam_brievenhulp_default_disclaimer', {_locale: 'nl'}) }}" hreflang="nl">
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="section intro proceed">
+        <h1><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" lang="nl">Snap de Brief</a></h1>
+    </div>
+
+    {% if app.request.locale == 'nl' %}
+
+        <div class="section content">
+            <h2>Belangrijkste punten</h2>
+            <ul class="important">
+                <li>We gebruiken een beveiligde verbinding.</li>
+                <li>Je gegevens worden na 14 dagen verwijderd.</li>
+                <li>Je gegevens komen alleen terecht bij de medewerkers van het Sociaal Loket.</li>
+                <li>Je gegevens worden niet doorgestuurd naar andere organisaties.</li>
+            </ul>
+        </div>
+
+        <div class="section disclaimer content" id="disclaimer">
+            <h2>Disclaimer en privacyverklaring</h2>
+            <p class="date">11 juli 2016</p>
+            <p>Snap de Brief (deze website) is ontwikkeld om u te helpen bij het beter begrijpen van brieven die door diverse instanties aan u gestuurd worden.</p>
+            <p>Deze disclaimer en de privacyverklaring zijn van toepassing op snapdebrief.nl. Door gebruik te maken van deze website gaat u automatisch akkoord met deze disclaimer en privacyverklaring.</p>
+            <h3>Aansprakelijkheid</h3>
+            <p>De informatie op deze website is uitsluitend bedoeld als algemene informatie en hoewel bij de totstandkoming van deze website maximale zorg besteed is aan de in deze website getoonde informatie, kan niet voor de juistheid en volledigheid daarvan worden ingestaan. Er kunnen geen rechten aan de informatie op deze website worden ontleend. Er kan evenmin gegarandeerd worden dat deze website foutloos of ononderbroken zal functioneren, of dat de software vrij is van virussen of andere schadelijke componenten. De ontwikkelaar van deze website aanvaardt hiervoor dan ook geen enkele aansprakelijkheid in welke vorm dan ook.</p>
+            <h3>Informatie van derden, producten en diensten</h3>
+            <p>Indien in deze website links naar websites van derden worden weergegeven, betekent dit niet dat de op of via deze website aangeboden producten of diensten worden aanbevolen. De houder van deze website aanvaardt geen aansprakelijkheid en geen enkele verantwoordelijkheid voor de inhoud, het gebruik of de beschikbaarheid van websites waarnaar wordt verwezen of die verwijzen naar deze website. Het gebruik van dergelijke links is voor eigen risico.</p>
+            <h3>Wijzigingen</h3>
+            <p>De ontwikkelaar van deze website behoudt zich het recht voor de op of via deze website aangeboden informatie, met inbegrip van de tekst van deze disclaimer, te allen tijde te wijzigen zonder hiervan nadere aankondiging te doen. Het verdient aanbeveling periodiek na te gaan of de op of via deze website aangeboden informatie, met inbegrip van de tekst van deze disclaimer, is gewijzigd.</p>
+            <h3>Privacyverklaring</h3>
+            <h4>Persoonsgegevens</h4>
+            <p>Met deze website deelt u in de vorm van de door u ingediende brieven mogelijk diverse persoonsgegevens en daarnaast ook uw telefoonnummer om teruggebeld te worden. Als persoonsgegevens gelden gegevens die kunnen worden gebruikt om uw identiteit te achterhalen. Wij maken daarbij onderscheid tussen (1) persoonsgegevens die u actief aan ons verstrekt en (2) persoonsgegevens die – om technische redenen – automatisch aan ons worden doorgegeven. Onder persoonsgegevens die u actief aan ons verstrekt zijn onder meer begrepen de naam, contactgegevens, voorkeuren en andere gegevens die u, al dan niet via ingescande brieven aan ons heeft verstrekt. Daarnaast geldt dat bij het gebruik van deze website automatisch enkele technische gegevens door uw apparatuur aan onze computers worden verstrekt, zoals het door u gebruikte IP-adres, het besturingssysteem, de gebruikte internet browser en (in sommige gevallen) de laatste website die u heeft bezocht.</p>
+            <p>De privacy van gebruikers van deze website wordt gerespecteerd en de aangeboden gegevens zullen uitsluitend gebruikt worden voor de hierboven beschreven doeleinden en in overeenstemming met de Wet Bescherming Persoonsgegevens behandeld worden.</p>
+            <p>Uw gegevens zullen niet gebruikt worden voor advertenties, marketing of wetenschappelijk onderzoek.</p>
+            <p>De verantwoordelijken voor de verwerking van de persoonsgegevens zijn Gemeente Amsterdam, BOOT – Onderdeel van Hogeschool van Amsterdam en Stichting MaDi.</p>
+            <p>DataLab Amsterdam, Stichting MaDi en BOOT zijn bewerker in opdracht van Gemeente Amsterdam. Zij zijn verantwoordelijk voor de technische ontwikkeling en het beheer van deze website.</p>
+            <h4>Delen van gegevens met derden</h4>
+            <p>Uw persoonsgegevens worden niet zonder uitdrukkelijke toestemming aan derden verstrekt, tenzij deze derden als bewerker worden ingezet.</p>
+            <h4>Noodzakelijk te verstrekken gegevens</h4>
+            <p>Het verstrekken van uw telefoonnummer is wel noodzakelijk om een reactie van ons te ontvangen.</p>
+            <h4>Rechten van de consument</h4>
+            <p>U kunt op elk moment inzage vragen in de gegevens die deze website over u verzamelt en deze laten corrigeren of verwijderen door een verzoek te sturen naar: info@snapdebrief.nl, onder vermelding van ‘inzage/wijzigingen/wissen persoonsgegevens’.</p>
+            <h4>Bewaartermijnen</h4>
+            <p>Persoonsgegevens worden niet langer bewaard dan nodig is voor bovengenoemde doeleinden, of om te voldoen aan wettelijke (bewaar)verplichtingen. Deze bewaartermijn bedraagt 14 dagen.</p>
+            <h4>Veiligheidsmaatregelen</h4>
+            <p>De ontwikkelaar van deze website draagt zorg voor een passende mate en vorm van beveiliging van uw persoonsgegevens. Uw persoonsgegevens worden opgeslagen op een server van de Gemeente Amsterdam. Er wordt gebruikt gemaakt van een beveiligde verbinding. Uitsluitend die personen die hiertoe zijn aangewezen binnen het kader van dit project hebben toegang tot uw persoonsgegevens.</p>
+            <h3>Toepasselijk recht</h3>
+            <p>Op deze website, de disclaimer en de privacyverklaring is het Nederlands recht van toepassing. Alle geschillen uit hoofde van of in verband met deze disclaimer zullen bij uitsluiting worden voorgelegd aan de bevoegde rechter in Nederland.</p>
+            <p class="back"><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" class="button">Terug</a></p>
+        </div>
+
+    {% else %}
+
+        <div class="section content">
+            <h2>Main points</h2>
+            <ul class="important">
+                <li>We use a secure connection.</li>
+                <li>Your information will be removed after 14 days.</li>
+                <li>Your information will only be received by the the employees of the Sociaal Loket (Social Service Point).</li>
+                <li>Your information will not be forwarded to other organizations.</li>
+            </ul>
+        </div>
+
+        <div class="section disclaimer content" id="disclaimer">
+            <h2>Disclaimer and privacy statement</h2>
+            <p class="date">11 July 2016</p>
+            <p><span lang="nl">Snap de Brief</span> (this website) has been developed to help you better understand letters received from all kinds of organisations.</p>
+            <p>This disclaimer and privacy statement are applicable to snapdebrief.nl. By using this website, you automatically agree with the contents of this disclaimer and privacy statement.</p>
+            <h3>Liability</h3>
+            <p>The sole purpose of the information on this website is giving general information. Although the shown information on this website has been put together with the utmost care, the accuracy and completeness of its contents can not be guaranteed. No rights can be derived from the information on this website. Nor are the flawless or uninterrupted functioning of this website guaranteed, or that the software is free of viruses or other harmful components. The developer of this website accepts no liability whatsoever in any form.</p>
+            <h3>Information from third parties, products and services</h3>
+            <p>Displaying links to websites from third parties on this website does not mean that the offered products or services thereon are recommended. The owner of this website accepts no liability or responsibility for the contents, utilization or availability of websites that link to or are linked from this website. The use of these links is at one’s own risk.</p>
+            <h3>Alterations</h3>
+            <p>The developer of this website reserves the right to, at any given moment, alter without notice the information given on or through this website, including the contents of this disclaimer. It is advisable to periodically check if the information offered on or through this website, including this disclaimer, has been altered.</p>
+            <h3>Privacy statement</h3>
+            <h4>Personal data</h4>
+            <p>By submitting your letter(s) to this website you will possibly share several personal data, and your phone number (to allow us to call you back). Personal data are data that can be used to determine your identity. We distinguish between (1) personal data you actively provide us with, and (2) personal data that – for technical reasons – are automatically provided to us. Actively provided personal data include your name, contact information, preferences and other data that you have provided us with by sending a scanned letter or any other source of information. Furthermore, some technical details like your IP-address, the operating system, the used internet browser and (in some cases) the last website you have visited will be provided to us.</p>
+            <p>The privacy of the users of this website is respected and the offered data will be used exclusively for the purposes described above and will be treated in accordance with the Personal Data Protection Act (<span lang="nl">Wet Bescherming Persoonsgegevens</span>).</p>
+            <p>Your data will not be applied for advertisements, marketing or scientific research.</p>
+            <p>The organisations responsible for the processing of personal data are the Municipality of Amsterdam (<span lang="nl">Gemeente Amsterdam</span>), BOOT – part of the College of Amsterdam and Stichting MaDi.</p>
+            <p>DataLab Amsterdam, Stichting MaDi en BOOT are processors commissioned by the Municipality of Amsterdam. They are responsible for the development and administration of this website.</p>
+            <h4>Sharing data with third parties</h4>
+            <p>Your personal data will not be provided to third parties without explicit approval, unless the third party is deployed as processor.</p>
+            <h4>Crucial data to be provided</h4>
+            <p>The providing of your or phone number is required to get a response from us.</p>
+            <h4>Rights of the consumer</h4>
+            <p>You have right of access to the data this website collects about you, and you can have the data corrected or removed by sending a request to info@snapdebrief.nl, titled ‘access to / alterations in / removal of personal data’.</p>
+            <h4>Retention period</h4>
+            <p>Personal data will be kept no longer than is necessary for the abovementioned purposes, or to meet legal retention obligations. This retention period amounts to 14 days.</p>
+            <h4>Security measures</h4>
+            <p>The developer of this website provides appropriate measures of security for your personal data. Your personal data will be stored on a server of the Municipality of Amsterdam. A secure connection is used. Only those persons appointed for this project have access to your personal data.</p>
+            <h4>Applicable law</h4>
+            <p>This website, the disclaimer and the privacy statement are applicable to Dutch law. All disputes on account of or in connection with this disclaimer will be brought before the proper court in the Netherlands in case of disqualification.</p>
+            <p class="back"><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" class="button">Back</a></p>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

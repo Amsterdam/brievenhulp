@@ -1,0 +1,40 @@
+server {
+  server_name brievenhulp.datalabamsterdam.nl snapdebrief.nl;
+  rewrite ^ https://www.snapdebrief.nl$request_uri? permanent;
+}
+
+server {
+  listen 80 default;
+  listen [::]:80 default;
+  server_name www.snapdebrief.nl;
+
+  root /srv/web/brievenhulp/web;
+  index index.html;
+
+#  access_log /var/log/nginx/brievenhulp-access.log; # use default locations to log to console
+#  error_log /var/log/nginx/brievenhulp-error.log; # use default locations to log to console
+
+  location / {
+    try_files $uri /app.php$is_args$args;
+  }
+
+  location ~ ^/app\.php(/|$) {
+    fastcgi_pass unix:/run/php/php7.0-fpm.sock;
+    fastcgi_split_path_info ^(.+\.php)(/.*)$;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+    fastcgi_param DOCUMENT_ROOT $realpath_root;
+    fastcgi_param HTTP_X_FORWARDED_PROTO https; # LB does not send this
+    internal;
+  }
+
+  location ~* \.(?:jpg|jpeg|gif|png|ico|cur|gz|svg|svgz|mp4|ogg|ogv|webm|htc)$ {
+    expires 1y;
+    add_header Cache-Control "public";
+  }
+
+  location ~* \.(?:css|js)$ {
+    expires 1y;
+    add_header Cache-Control "public";
+  }
+}

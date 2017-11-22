@@ -1,0 +1,12 @@
+// Media Queries
+
+@mixin medium {
+    @media only screen and (max-width: 800px) and (min-width: 451px ) {
+        @content;
+    }
+}
+@mixin small {
+    @media only screen and (max-width: 450px) {
+        @content;
+    }
+}

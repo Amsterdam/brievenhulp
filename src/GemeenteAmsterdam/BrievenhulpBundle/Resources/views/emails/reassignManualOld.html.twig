@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <style type="text/css">
+body { font-family: Arial; }
+        </style>
+    </head>
+    <body>
+        <p>Beste {{ vorigeHulpverlener.naam }},</p>
+        <p>{{ hulpverlener.naam }} heeft brief {{ hulpvraag.referentie.id }}, die aan jou was toegewezen, overgedragen aan {{ nieuweHulpverlener.naam }}.</p>
+        <p>Klik hieronder om de brief te bekijken <a href="{{ url('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': hulpvraag.uuid}) }}">Bekijk brief</a></p>
+    </body>
+</html>

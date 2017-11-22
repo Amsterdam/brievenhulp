@@ -1,0 +1,22 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    messagebird:
+        class: MessageBird\Client
+        arguments:
+            - %messagebird_api_key%
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        tags:
+            - { name: twig.extension }
+    exception_controller:
+        class: GemeenteAmsterdam\BrievenhulpBundle\Controller\ExceptionController
+        arguments:
+            - '@twig'
+            - '%kernel.debug%'

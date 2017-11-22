@@ -1,0 +1,6 @@
+Beste  {{ nieuweHulpverlener.naam }},
+
+{{ hulpverlener.naam }} heeft brief {{ hulpvraag.referentie.id }} toegewezen aan jou.
+{% if vorigeHulpverlener %}Deze brief was eerst toegewezen aan {{ vorigeHulpverlener.naam }}.{% endif %}
+
+{{ url('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': hulpvraag.uuid}) }}

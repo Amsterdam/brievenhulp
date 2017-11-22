@@ -1,0 +1,38 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{% block main %}
+
+    <main class="wrapper">
+        <div class="table-wrapper">
+            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_accountcreate') }}" class="button">Nieuwe toevoegen</a>
+
+            <table class="table">
+                <tr>
+                    <th>Id</th>
+                    <th>Naam</th>
+                    <th>Organisatie</th>
+                    <th>Mail</th>
+                    <th>Actief</th>
+                    <th>Telefoon</th>
+                    <th>Rol</th>
+                    <th>Acties</th>
+                </tr>
+                {% for hulpverlener in hulpverleners %}
+                    <tr>
+                        <td>{{ hulpverlener.id }}</td>
+                        <td>{{ hulpverlener.naam }}</td>
+                        <td>{{ hulpverlener.organisatie }}</td>
+                        <td>{{ hulpverlener.email }}</td>
+                        <td>{% if hulpverlener.isActive %}Ja{% else %}Nee{% endif %}</td>
+                        <td>{{ hulpverlener.telefoon }}</td>
+                        <td>{{ hulpverlener.role }}</td>
+                        <td>
+                            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_accountedit', {'id': hulpverlener.id}) }}">Bewerken</a>
+                            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_showauditlog', {'hulpverlenerId': hulpverlener.id}) }}">Log</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </main>
+{% endblock %}

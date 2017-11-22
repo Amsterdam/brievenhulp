@@ -1,0 +1,97 @@
+<!doctype html>
+
+<!--
+   -  Copyright (C) 2016 X Gemeente
+   -                     X Amsterdam
+   -                     X Onderzoek, Informatie en Statistiek
+   -
+   -  This Source Code Form is subject to the terms of the Mozilla Public
+   -  License, v. 2.0. If a copy of the MPL was not distributed with this
+   -  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+   -->
+
+<html lang="nl">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex, nofollow">
+        <!--<link href="/favicon.ico" rel="icon" type="image/x-icon">-->
+        <title>{{ application_title }}</title>
+        <!--[if lt IE 9]>
+            <script src="{{ asset('bundles/gemeenteamsterdambrievenhulp/js/html5.shiv.min.js') }}"></script>
+        <![endif]-->
+        {% stylesheets '@GemeenteAmsterdamBrievenhulpBundle/Resources/public/sass/main.scss' filter='scssphp,cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+        {% endstylesheets %}
+    </head>
+    <body>
+        {% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.grid.html.twig' %}
+
+        <header>
+            <div class="wrapper">
+                <div class="header-wrapper">
+                    {% if app.user %}
+                        <div class="account">
+                           <p>
+                                <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_profile') }}">
+                                    <span class="icon-wrapper"><img src="/img/account.png"></span>
+                                    <span class="gebruikersnaam">{{ app.user.naam }}</span>
+                                </a>
+                                <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_logout') }}" class="account-link">Uitloggen</a>
+                            </p>
+                        </div>
+                    {% endif %}
+                    <h1><a href="/hulpverlener"><img src="/img/logo-snapdebrief.png" alt="Snap de Brief" class="main-logo"></a></h1>
+                </div>
+            </div>
+        </header>
+
+        {% if app.user %}
+            <nav class="main-nav">
+                <div class="wrapper">
+                    <ul class="nav-wrapper">
+                        <li {% if app.request.attributes.get('_route') == 'gemeenteamsterdam_brievenhulp_hulpverlener_home' %}class="active"{% endif %}>
+                            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_home') }}">Mijn brieven</a>
+                        </li>
+                        {#
+                        <li {% if app.request.attributes.get('_route') == 'gemeenteamsterdam_brievenhulp_hulpverlener_profile' %}class="active"{% endif %}>
+                            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_profile') }}">Mijn profiel</a>
+                        </li>#}
+                        <li {% if app.request.attributes.get('_route') == 'gemeenteamsterdam_brievenhulp_hulpverlener_brieven' %}class="active"{% endif %}>
+                            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven') }}">Alle brieven</a>
+                        </li>
+                        <li {% if app.request.attributes.get('_route') == 'gemeenteamsterdam_brievenhulp_hulpverlener_overview' %}class="active"{% endif %}>
+                            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_overview') }}">Team rooster</a>
+                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li {% if app.request.attributes.get('_route') == 'gemeenteamsterdam_brievenhulp_hulpverlener_accountindex' %}class="active"{% endif %}>
+                                <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_accountindex') }}">Accounts</a>
+                            </li>
+                            <li {% if app.request.attributes.get('_route') == 'gemeenteamsterdam_brievenhulp_hulpverlener_archief' %}class="active"{% endif %}>
+                                <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_archief') }}">Archief</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    <form class="search-wrapper" method="get" action="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven') }}">
+                        <input type="search" placeholder="Zoek telefoonnummer" name="q" value="{{ q|default('') }}">
+                    </form>
+                </div>
+            </nav>
+        {% endif %}
+
+        {% if app.session.flashbag.has('info') %}
+            <section class="flash">
+                <ul>
+                {% for flashMessage in app.session.flashbag.get('info') %}
+                    <li>✓ {{ flashMessage }}</li> {# note: alleen success messages #}
+                {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% block main %}{% endblock %}
+
+        {% block scripts %}{% endblock %}
+    </body>
+</html>

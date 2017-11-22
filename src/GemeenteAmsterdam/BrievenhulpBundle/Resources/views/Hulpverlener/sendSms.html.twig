@@ -1,0 +1,42 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:modal.html.twig' %}
+
+{% block modal %}
+
+    <div class="modal-wrapper">
+        <h2 class="text-h2">Niet bereikbaar</h2>
+        <p>Hulpvrager niet kunnen bereiken? Stuur een SMS namens 'Snap de Brief'.</p>
+        <p style="margin-bottom: 15px"><b>Let op:</b> De hulpvrager kan niet reageren op dit bericht. Je kunt de inhoud van de SMS eventueel zelf aanpassen.</p>
+        <p style="margin-bottom: 5px"><b>Stuur SMS naar {{ hulpvraag.telefoon }}</b></p>
+        {{ form_start(form, {'attr': {'id':'send-sms-form','class': 'form', 'action': path('gemeenteamsterdam_brievenhulp_hulpverlener_sendsms', {'hulpvraagUuid':hulpvraag.uuid})} }) }}
+            <div class="form-row">
+                {{ form_widget(form.msg) }}
+                {{ form_errors(form.msg) }}
+            </div>
+            <button type="submit">Versturen</button>
+            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': hulpvraag.uuid}) }}" class="annuleren">Annuleren</a>
+        {{ form_end(form) }}
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            var frm = $('#send-sms-form');
+            frm.submit(function (ev) {
+                $.ajax({
+                    type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    data: frm.serialize(),
+                    success: function (data, textStatus, xhr) {
+                        if (xhr.status == 204) {
+                            window.location.href = "{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_home') }}";
+                        } else {
+                            $("#modal").html(data);
+                        }
+                    }
+                });
+                ev.preventDefault();
+            });
+        });
+
+    </script>
+
+{% endblock %}

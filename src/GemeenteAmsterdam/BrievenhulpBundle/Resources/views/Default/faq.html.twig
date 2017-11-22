@@ -1,0 +1,201 @@
+{% extends "GemeenteAmsterdamBrievenhulpBundle:master:default.html.twig" %}
+{% set hide_script = true %}
+
+
+{%- block title -%}
+    {%- if app.request.locale == 'nl' -%}
+        Hoe het werkt - Snap de Brief
+    {%- else -%}
+        How it works - Snap de Brief
+    {%- endif -%}
+{%- endblock -%}
+
+{% block metadata %}
+    {% if app.request.locale == 'nl' %}
+        <meta name="description" content="Moeilijke brief gekregen? Of begrijp je een brief niet? Gebruik Snap de Brief. Lees hier hoe het werkt.">
+        <link rel="alternate" href="{{ path('gemeenteamsterdam_brievenhulp_default_faq', {_locale: 'en'}) }}" hreflang="en">
+    {% else %}
+        <meta name="description" content="Did you receive a difficult letter? Is it hard to follow? Use Snap de Brief. Read how it works here.">
+        <link rel="alternate" href="{{ path('gemeenteamsterdam_brievenhulp_default_faq', {_locale: 'nl'}) }}" hreflang="nl">
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    {% if app.request.locale == 'nl' %}
+
+        <div class="section intro proceed">
+            <h1><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}">Snap de Brief</a></h1>
+            <p>Hoe het werkt</p>
+        </div>
+
+        <div class="section proceed language">
+            <p><strong><img src="/img/nl.png" alt="" width="20" height="13">Nederlands</strong> <span><a href="{{ path('gemeenteamsterdam_brievenhulp_default_faq', {_locale: 'en'}) }}" lang="en"><img src="/img/en.png" alt="" width="20" height="13">English</a></span></p>
+        </div>
+
+        <div class="section content step-1 proceed">
+            <p>Moeilijke brief gekregen? Of begrijp je een brief niet? Gebruik <a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}">snapdebrief.nl</a></p>
+            <p>Stuur met je mobiele telefoon een foto van je brief, en krijg uitleg.</p>
+            <h3>Hoe stuur ik een brief?</h3>
+            <ul>
+                <li>Pak je mobiele telefoon</li>
+                <li>Ga op internet naar: <a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}">snapdebrief.nl</a></li>
+                <li>Volg de aanwijzingen:
+                    <ol>
+                        <li>Maak een foto van je brief</li>
+                        <li>Vul een telefoonnummer in waarop je gebeld kan worden</li>
+                        <li>Vul je vraag in (niet verplicht)</li>
+                        <li>Druk op “Verstuur”</li>
+                    </ol>
+                </li>
+            </ul>
+            <h3>Hoe krijg ik antwoord?</h3>
+            <ul>
+                <li>Je brief komt aan bij één van de medewerkers van het Sociaal Loket.</li>
+                <li>De medewerker van het Sociaal Loket belt je meestal binnen één werkdag, en helpt je de brief begrijpen.</li>
+                <li>Is de vraag te moeilijk? Dan vertelt de medewerker van het Sociaal Loket naar wie je toe kan gaan met je brief voor meer hulp.</li>
+            </ul>
+            <p class="back"><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" class="button">Stuur je brief</a></p>
+        </div>
+
+        <div class="section content">
+            <h2>Veel gestelde vragen</h2>
+            <h3>1. Wat voor brieven kan ik insturen?</h3>
+            <p>Alle brieven die je niet begrijpt. Dat is voor iedereen anders. Voorbeelden:</p>
+            <ul>
+                <li>brieven van <strong>de Belastingdienst</strong></li>
+                <li>brieven van <strong>incassobureaus</strong></li>
+                <li>brieven van <strong>de gemeente</strong></li>
+                <li>brieven over <strong>huur</strong></li>
+                <li>brieven over <strong>toeslagen</strong></li>
+                <li>facturen</li>
+                <li>rekeningen</li>
+            </ul>
+            <p>enzovoort</p>
+            <h3>2. Waarom moet ik mijn telefoonnummer invullen?</h3>
+            <p>Nadat je de brief stuurt, belt een medewerker van het Sociaal Loket je op. Jij kunt dan uitleggen wat je niet snapt aan de brief.</p>
+            <h3>3. Wie helpt mij met mijn brief?</h3>
+            <p>Snap de Brief stuurt je brief door naar een medewerker van het sociaal loket. Op dit moment zijn dat:</p>
+            <div class="contacts">
+                <div class="contact">
+                    <img src="/img/amsterdam.png" alt="">
+                    <p>Gemeente Amsterdam</p>
+                </div>
+                <div class="contact">
+                    <img src="/img/logo_sociaal_loket_small.jpg" alt="">
+                    <p>Sociaal Loket</p>
+                </div>
+            </div>
+            <p>Je brief wordt gelezen door iemand die dagelijks mensen helpt met moeilijke brieven.</p>
+            <h3>4. Kan ik zelf kiezen wie mij helpt?</h3>
+            <p>Nee. Snap de Brief stuurt je brief een medewerker van het Sociaal Loket die op dat moment tijd heeft.</p>
+            <h3>5. Hoe snel krijg ik antwoord?</h3>
+            <p>Zo snel mogelijk. Meestal binnen één werkdag. Medewerkers van het Sociaal Loket zijn van maandag tot en met vrijdag beschikbaar.</p>
+            <p>Op zaterdag en zondag kun je brieven sturen, maar je wordt dan pas maandag gebeld.</p>
+            <h3>6. Welke talen spreekt Snap de Brief?</h3>
+            <p>Nederlands en Engels.</p>
+            <h3>7. Zijn mijn gegevens veilig?</h3>
+            <p>Ja, je gegevens zijn veilig</p>
+            <ul>
+                <li>We gebruiken een beveiligde verbinding.</li>
+                <li>Je gegevens worden na 14 dagen verwijderd.</li>
+                <li>Je gegevens komen alleen terecht bij de medewerkers van het Sociaal Loket.</li>
+                <li>Je gegevens worden niet doorgestuurd naar andere organisaties.</li>
+            </ul>
+            <h3>8. Wie kunnen brieven insturen?</h3>
+            <p>Alle inwoners van de gemeente Amsterdam.</p>
+            <h3>9. Kan ik Snap de Brief downloaden?</h3>
+            <p>Snap de Brief is een website. Je hoeft zelf niets te downloaden. Je kunt <a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}">snapdebrief.nl</a> wel toevoegen aan je favorieten of je home screen als snelkoppeling.</p>
+            <p class="back"><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" class="button">Stuur je brief</a></p>
+        </div>
+
+    {% else %}
+
+        <div class="section intro proceed">
+            <h1><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" lang="nl">Snap de Brief</a></h1>
+            <p>How it works</p>
+        </div>
+
+        <div class="section proceed language">
+            <p><span><a href="{{ path('gemeenteamsterdam_brievenhulp_default_faq', {_locale: 'nl'}) }}" lang="nl"><img src="/img/nl.png" alt="" width="20" height="13">Nederlands</a></span> <strong><img src="/img/en.png" alt="" width="20" height="13">English</strong></p>
+        </div>
+
+        <div class="section content step-1 proceed">
+            <p>Did you receive a difficult letter? Is it hard to follow? Use <a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}">snapdebrief.nl</a> (Dutch for “understanding the letter”)</p>
+            <p>Use your mobile phone to send a picture of your letter to get it explained.</p>
+            <h3>This is how you send a letter</h3>
+            <ul>
+                <li>Grab your mobile phone</li>
+                <li>On the internet, go to <a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}">snapdebrief.nl</a></li>
+                <li>Follow the instructions:
+                    <ol>
+                        <li>Take a picture of your letter</li>
+                        <li>Fill in the phone number on which you can be contacted</li>
+                        <li>Fill in your question (not required)</li>
+                        <li>Press “Send”</li>
+                    </ol>
+                </li>
+            </ul>
+            <h3>This is how you receive a reply</h3>
+            <ul>
+                <li>Your letter is received by one of the employees of the Sociaal Loket (Social Service Point).</li>
+                <li>The employee of the Sociaal Loket (Social Service Point) calls you, mostly within one working day, and helps you to understand the letter.</li>
+                <li>Is your question too complicated? Then the employee of the Sociaal Loket (Social Service Point) will tell you where to go for further help.</li>
+            </ul>
+            <p class="back"><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" class="button">Send your letter</a></p>
+        </div>
+
+        <div class="section content">
+            <h2>Frequently asked questions</h2>
+            <h3>1. What kind of letters can I send?</h3>
+            <p>Any letter you don’t understand. Which is different for each person. Examples:</p>
+            <ul>
+                <li>letters from <strong>the tax department</strong> (<span lang="nl">Belastingdienst</span>)</li>
+                <li>letters from <strong>a collection agency</strong> (<span lang="nl">aanmaningen, incasso’s</span>)</li>
+                <li>letters from <strong>the local council</strong> (<span lang="nl">Gemeente Amsterdam</span>)</li>
+                <li>letters about <strong>the rent</strong> (<span lang="nl">huur</span>)</li>
+                <li>letters about <strong>allowances</strong> (<span lang="nl">toeslagen</span>)</li>
+                <li>invoices (<span lang="nl">facturen</span>)</li>
+                <li>bills (<span lang="nl">rekeningen</span>)</li>
+            </ul>
+            <p>etcetera</p>
+            <h3>2. Why do I have to fill in a phone number?</h3>
+            <p>After you have sent the letter with your phone, the employee of the Sociaal Loket (Social Service Point) will call you. Then you can explain what you don’t understand about the letter.</p>
+            <h3>3. Who will help me with my letter?</h3>
+            <p><span lang="nl">Snap de Brief</span> will forward your letter to affiliated organisations. At this moment these are:</p>
+            <div class="contacts" lang="nl">
+                <div class="contact">
+                    <img src="/img/amsterdam.png" alt="">
+                    <p>Gemeente Amsterdam</p>
+                </div>
+                <div class="contact">
+                    <img src="/img/logo_sociaal_loket_small.jpg" alt="">
+                    <p>Sociaal Loket</p>
+                </div>
+            </div>
+            <p>Your letter will be read by a professional who helps people with difficult letters.</p>
+            <h3>4. Can I choose who will be helping me?</h3>
+            <p>No. <span lang="nl">Snap de Brief</span> will send your letter to an employee of the Sociaal Loket (Social Service Point) who is available at that moment.</p>
+            <h3>5. How soon will I get a reply?</h3>
+            <p>As soon as possible, mostly within one workday. The Sociaal Loket (Social Service Point) is available from Monday to Friday.</p>
+            <p>You can send your letter on Saturday and Sunday, but in that case you will be called on Monday.</p>
+            <h3>6. What languages are spoken by <span lang="nl">Snap de Brief</span>?</h3>
+            <p>Dutch and English.</p>
+            <h3>7. Is my information safe?</h3>
+            <p>Yes, any information you send is safe.</p>
+            <ul>
+                <li>We use a secure connection.</li>
+                <li>Your information will be removed after 14 days.</li>
+                <li>Your information will only be received by the employees of the Sociaal Loket (Social Service Point).</li>
+                <li>Your information will not be forwarded to other organisations.</li>
+            </ul>
+            <h3>8. Who can send a letter to <span lang="nl">Snap de Brief</span>?</h3>
+            <p>All citizens of the City of Amsterdam.</p>
+            <h3>9. Can I download <span lang="nl">Snap de Brief</span>?</h3>
+            <p><span lang="nl">Snap de Brief</span> is a website. You don’t have to download anything yourself. You can add <a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}">snapdebrief.nl</a> to your favorites or home screen as a shortcut.</p>
+            <p class="back"><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" class="button">Send your letter</a></p>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

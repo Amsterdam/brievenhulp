@@ -1,0 +1,14 @@
+{% extends app.request.isXmlHttpRequest ? "GemeenteAmsterdamBrievenhulpBundle:master:ajax.html.twig" : "GemeenteAmsterdamBrievenhulpBundle:master:default.html.twig" %}
+
+
+{% block body %}
+
+    <div class="section done" data-decorator="track-event" data-category="Form" data-action="Send-Done" data-name="Kenmerk" data-value="{{ referentie.id }}">
+        <h2>{{ 'Gelukt!'|trans }}</h2>
+        <p>{{ 'Je brief is verstuurd'|trans }}</p>
+        <p>{{ 'Een hulpverlener probeert je binnen één werkdag te bellen op'| trans }}:</p>
+        <p class="number"><strong>0{{ data.telefoon|slice(3) }}</strong></p>
+        <p class="back"><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index') }}" class="button">OK</a></p>
+    </div>
+
+{% endblock %}

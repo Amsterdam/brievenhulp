@@ -1,0 +1,6 @@
+{% if mini is defined %}
+    <time class="mini"><span class="dag">{{ tijdstip|localizeddate('medium', 'none', locale, null, "EE d MMMM") }} '{{ tijdstip|localizeddate('medium', 'none', locale, null, "YY") }}</span><span class="tijd"> <img src="/img/clock.png" class="clock"> {{ tijdstip|date('H:i') }}</span></time>
+{% else %}
+    {#<time><span class="dag">{{ tijdstip|localizeddate('medium', 'none', locale, null, "EE e MMMM") }} '{{ tijdstip|localizeddate('medium', 'none', locale, null, "YY") }}</span><span class="tijd"> <img src="/img/clock.png" class="clock"> {{ tijdstip|date('H:i') }}</span></time>#}
+    <time><span class="dag">{{ tijdstip|localizeddate('medium', 'none', locale, null, "EE dd-MM-YYYY") }}</span> om <span class="tijd">{{ tijdstip|date('H:i') }}</span></time>
+{% endif %}

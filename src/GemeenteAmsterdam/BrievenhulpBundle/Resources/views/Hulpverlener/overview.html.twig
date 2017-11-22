@@ -1,0 +1,59 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{% block main %}
+<main class="wrapper">
+    <div class="table-wrapper">
+
+        {#<h2 class="text-h2">Beschikbaarheid</h2>#}
+
+        <table class="table rooster">
+            <thead>
+                <tr>
+                    <th>Naam</th>
+                    <th>Telefoon</th>
+                    <th>Organisatie</th>
+                    <th>Brieven</th>
+                    <th colspan="2" class="dagborder">Maandag</th>
+                    <th colspan="2" class="dagborder">Dinsdag</th>
+                    <th colspan="2" class="dagborder">Woensdag</th>
+                    <th colspan="2" class="dagborder">Donderdag</th>
+                    <th colspan="2" class="dagborder">Vrijdag</th>
+                    <th colspan="2" class="dagborder">Zaterdag</th>
+                    <th colspan="2" class="dagborder">Zondag</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hulpverlener in hulpverleners %}
+                    <tr>
+                        <td>{{ hulpverlener.naam }}</td>
+                        <td>{{ hulpverlener.telefoon }}</td>
+                        <td>{{ hulpverlener.organisatie }}</td>
+                        <td>{{ stats[hulpverlener.id][0]|default('-') }}</td>
+                        <td class="dagdeel dagborder">{% if 'mon1' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+                        <td class="dagdeel">{% if 'mon2' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+
+                        <td class="dagdeel dagborder">{% if 'tue1' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+                        <td class="dagdeel">{% if 'tue2' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+
+                        <td class="dagdeel dagborder">{% if 'wed1' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+                        <td class="dagdeel">{% if 'wed2' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+
+                        <td class="dagdeel dagborder">{% if 'thu1' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+                        <td class="dagdeel">{% if 'thu2' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+
+                        <td class="dagdeel dagborder">{% if 'fri1' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+                        <td class="dagdeel">{% if 'fri2' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+
+                        <td class="dagdeel dagborder">{% if 'sat1' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+                        <td class="dagdeel">{% if 'sat2' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+
+                        <td class="dagdeel dagborder">{% if 'sun1' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+                        <td class="dagdeel">{% if 'sun2' in hulpverlener.beschikbaarheid %}<span class="vinkje">✓</span>{% else %}<span class="afwezig">-</span>{% endif %}</td>
+
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</main>
+{% endblock %}

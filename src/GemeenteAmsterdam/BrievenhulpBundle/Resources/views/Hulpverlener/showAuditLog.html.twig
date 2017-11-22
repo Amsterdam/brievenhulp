@@ -1,0 +1,50 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{% set friendlyNames = {
+    'gemeenteamsterdam_brievenhulp_hulpverlener_showauditlog': 'Audit log',
+    'gemeenteamsterdam_brievenhulp_hulpverlener_brieven': 'Overzicht',
+    'gemeenteamsterdam_brievenhulp_hulpverlener_login': 'Login',
+    'gemeenteamsterdam_brievenhulp_hulpverlener_dashboard': 'Dashboard',
+    'gemeenteamsterdam_brievenhulp_hulpverlener_detail': 'Detail pagina hulpvraag',
+    'gemeenteamsterdam_brievenhulp_hulpverlener_sendsms': 'Stuur SMS'
+} %}
+
+{% block main %}
+
+<main class="wrapper">
+    <div class="table-wrapper">
+        <nav class="paginering">
+            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_showauditlog', {'hulpverlenerId': subject.id, 'date': prevDate|date('Y-m-d')}) }}">← {{ prevDate|date('d-m-Y') }}</a>
+            <span class="pagina">{{ date|date('d-m-Y') }}</span>
+            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_showauditlog', {'hulpverlenerId': subject.id, 'date': nextDate|date('Y-m-d')}) }}">{{ nextDate|date('d-m-Y') }} →</a>
+        </nav>
+        <table class="table">
+            <tr>
+                <th>Tijd</th>
+                <th>Actie</th>
+                <th>Pagina</th>
+                <th>Data</th>
+                <th>IP adres</th>
+            </tr>
+            {% for record in auditLogEntries %}
+                <tr>
+                    <td>{{ record.datumtijd|date('H:i:s') }}</td>
+                    <td>{{ record.actie }}</td>
+                    <td>
+                        {{ attribute(friendlyNames, record.route)|default(record.route) }}
+                        {% if record.route == 'gemeenteamsterdam_brievenhulp_hulpverlener_detail' %}
+                            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.hulpvraag.uuid}) }}">openen</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ record.data|json_encode }}</td>
+                    <td>{{ record.ip }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% if auditLogEntries|length == 0 %}
+            <p>Geen resultaten</p>
+        {% endif %}
+    </div>
+</main>
+
+{% endblock %}

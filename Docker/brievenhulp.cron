@@ -1,0 +1,4 @@
+# system wide crontabs & brievenhulp crontabs, placed under root crontab, since system wide crontabs and /etc/cron.d did not work (?)
+09,39 * * * * [ -x /usr/lib/php/sessionclean ] && if [ ! -d /run/systemd/system ]; then /usr/lib/php/sessionclean; fi
+* * * * * php /srv/web/brievenhulp/bin/console brievenhulp:assign-hulpverlener --env=prod -vvv > /var/log/cron.log 2> /var/log/cron.log
+5 * * * * php /srv/web/brievenhulp/bin/console brievenhulp:cleanup-hulpvragen --env=prod -vvv > /var/log/cron.log 2> /var/log/cron.log

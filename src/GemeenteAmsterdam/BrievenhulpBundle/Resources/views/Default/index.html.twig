@@ -1,0 +1,98 @@
+{% extends "GemeenteAmsterdamBrievenhulpBundle:master:default.html.twig" %}
+
+
+{%- block title -%}
+    {%- if app.request.locale == 'nl' -%}
+        Snap de Brief - Vraag over een brief? Wij helpen je!
+    {%- else -%}
+        Snap de Brief - Question about a letter? We can help!
+    {%- endif -%}
+{%- endblock -%}
+
+{% block metadata %}
+    {% if app.request.locale == 'nl' %}
+        <meta name="description" content="Moeilijke brief gekregen? Of begrijp je een brief niet? Gebruik Snap de Brief en laat iemand je helpen.">
+        <link rel="alternate" href="{{ path('gemeenteamsterdam_brievenhulp_default_index', {_locale: 'en'}) }}" hreflang="en">
+    {% else %}
+        <meta name="description" content="Did you receive a difficult letter? Is it hard to follow? Use Snap de Brief and let somebody help you.">
+        <link rel="alternate" href="{{ path('gemeenteamsterdam_brievenhulp_default_index', {_locale: 'nl'}) }}" hreflang="nl">
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <div id="intro" class="section intro proceed">
+        <h1 lang="nl"><img src="/img/logo-snapdebrief.png" class="logo" alt="Snap de Brief"></h1>
+        <p>{{ 'Vraag over een brief?'|trans }}<br>{{ 'Wij helpen je!'|trans }}</p>
+        <a href="{{ path('gemeenteamsterdam_brievenhulp_default_faq') }}">{{ 'Hoe werkt het?'|trans }}</a>
+    </div>
+
+    <div class="section proceed language">
+        {% if data.taal == 'en' %}
+            <p><span><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index', {_locale: 'nl'}) }}" lang="nl"><img src="/img/nl.png" alt="" width="20" height="13">Nederlands</a></span> <strong><img src="/img/en.png" alt="" width="20" height="13">English</strong></p>
+        {% else %}
+            <p><strong><img src="/img/nl.png" alt="" width="20" height="13">Nederlands</strong> <span><a href="{{ path('gemeenteamsterdam_brievenhulp_default_index', {_locale: 'en'}) }}" lang="en"><img src="/img/en.png" alt="" width="20" height="13">English</a></span></p>
+        {% endif %}
+    </div>
+
+    {{ form_start(form, {'attr': {'id': 'start', 'data-handler': 'upload-form', 'novalidate': true}}) }}
+
+        <div class="section step-1 proceed"{% if form_errors(form.foto) or form_errors(form.vraag) or form_errors(form.methode) or form_errors(form.emailadres) or form_errors(form.telefoon) %} data-decorator="scroll-to-me"{% endif %}>
+            <label class="step{% if form_errors(form.foto) %} error{% endif %}">
+                <span class="heading"><span class="number">1</span> {{ 'Maak een foto van je brief'|trans }}</span>
+                <span class="editor" id="editor">
+                    <img id="img-preview" src="/img/uitleg-briefhulp-01b.png" data-was="/img/uitleg-briefhulp-01b.png" alt="">
+                    <span id="file-preview"></span>
+                </span>
+                {{ form_widget(form.foto, {'id': 'file', 'attr': {'required': true, 'accept': 'image/*,.pdf,application/pdf,application/x-pdf,applications/vnd.pdf,text/pdf,text/x-pdf', 'data-decorator': 'enhance-file check-validity'}}) }}
+                <span class="button">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" xml:space="preserve">
+                        <path d="M50,40c-8.285,0-15,6.718-15,15c0,8.285,6.715,15,15,15c8.283,0,15-6.715,15-15 C65,46.718,58.283,40,50,40z M90,25H78c-1.65,0-3.428-1.28-3.949-2.846l-3.102-9.309C70.426,11.28,68.65,10,67,10H33 c-1.65,0-3.428,1.28-3.949,2.846l-3.102,9.309C25.426,23.72,23.65,25,22,25H10C4.5,25,0,29.5,0,35v45c0,5.5,4.5,10,10,10h80 c5.5,0,10-4.5,10-10V35C100,29.5,95.5,25,90,25z M50,80c-13.807,0-25-11.193-25-25c0-13.806,11.193-25,25-25 c13.805,0,25,11.194,25,25C75,68.807,63.805,80,50,80z M86.5,41.993c-1.932,0-3.5-1.566-3.5-3.5c0-1.932,1.568-3.5,3.5-3.5 c1.934,0,3.5,1.568,3.5,3.5C90,40.427,88.433,41.993,86.5,41.993z" />
+                    </svg>
+                    <span data-change="{{ 'Opnieuw'|trans }}" id="take-photo" data-working="{{ 'Even wachten'|trans }}...">{{ 'Maak foto'|trans }}</span>
+                </span>
+            </label>
+        </div>
+
+        <div class="section step-2 proceed">
+            <label class="step{% if form_errors(form.telefoon) %} error{% endif %}">
+                <span class="heading"><span class="number">2</span> <span data-error="{{ 'Vul een geldig telefoonnummer in'|trans }}">{% if form_errors(form.telefoon) %}{{ 'Vul een geldig telefoonnummer in'|trans }}{% else %}{{ 'Vul je telefoonnummer in'|trans }}{% endif %}</span> <small>({{ 'waarop we je kunnen bellen'|trans }})</small></span>
+                {{ form_widget(form.telefoon, {'id': 'method-sms', 'attr': {'required': true, 'autocomplete': 'tel mobile', 'data-decorator': 'check-validity validate-input', 'pattern': '[-+() 0-9]{10,}'}}) }}
+                <img src="/img/uitleg-briefhulp-03c.png" alt="">
+            </label>
+        </div>
+
+        <div class="section">
+            <label class="step{% if form_errors(form.vraag) %} error{% endif %}">
+                <span class="heading"><span class="number">3</span> {{ 'Als je een vraag hebt, stel die hier'|trans }}<br><small>({{ 'je kunt dit ook leeg laten'|trans }})</small></span>
+                {{ form_widget(form.vraag, {'attr': {'rows': 3, 'maxlength': 2048 }}) }}
+            </label>
+
+            <fieldset class="step" style="display:none;">
+                <legend><span class="heading">{{ 'In welke taal wil je antwoord?'|trans }}</span></legend>
+                <div>{{ form_widget(form.taal) }}</div>
+            </fieldset>
+
+            <div class="last-step">
+                <p class="call-to-action" id="call-to-action"><button type="submit" class="button" data-progress="{{ 'Bezig met versturen'|trans }}..." data-failed="{{ 'Versturen mislukt'|trans }}" id="submit-button">{{ 'Verstuur'|trans }} <img src="/img/proceed_vet.png" alt="" width="12"></button></p>
+                <div class="loader" id="loader"></div>
+            </div>
+        </div>
+
+        <div id="wie" class="section other">
+            <h2>{{ 'Medewerkers van het Sociaal Loket beantwoorden je vraag'|trans }}</h2>
+            <div class="contacts" lang="nl">
+                <div class="contact">
+                    <img src="/img/amsterdam.png" alt="">
+                    <p>Gemeente Amsterdam</p>
+                </div>
+                <div class="contact">
+                    <img src="/img/logo_sociaal_loket_small.jpg" alt="Logo Sociaal Loket">
+                    <p>Sociaal Loket</p>
+                </div>
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -1,0 +1,266 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{%- import 'GemeenteAmsterdamBrievenhulpBundle:macros:image.html.twig' as image -%}
+
+{% form_theme reassignForm _self %}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+    <ul>
+        {%- for error in errors -%}
+            <li class="note error">{{ error.message }}</li>
+        {%- endfor -%}
+    </ul>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{% block main %}
+
+<main class="wrapper">
+
+    {% if hulpvraag.archief %}
+        <div class="col-1-1">
+            <div class="note">
+                <p><strong>Let op:</strong> deze brief is niet meer beschikbaar (automatisch verwijderd).</p>
+            </div>
+        </div>
+    {% elseif hulpvraag.status > 0 %}
+        <div class="col-1-1">
+            <div class="note">
+                <p><strong>Let op:</strong> deze brief is al afgehandeld.</p>
+            </div>
+        </div>
+    {% elseif hulpverlener != hulpvraag.toegewezenHulpverlener %}
+        <div class="col-1-1">
+            <div class="note">
+                <p><strong>Let op:</strong> deze brief is momenteel niet aan jou toegewezen,
+                overleg eerst met de persoon aan wie de brief is toegewezen.</p>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="col-1-1">
+        <h1 class="ingediend">
+            {% if hulpvraag.referentie is not empty %}<span class="referentie">{{ hulpvraag.referentie.id }}</span>{% endif %}
+             Ingediend op {% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.tijdstip.twig' with {'tijdstip': hulpvraag.inkomstDatumtijd} %}
+        </h1>
+    </div>
+
+    <div class="foto-wrapper {% if hulpvraag.status > 0 %}inactief{% endif %}">
+        {% if hulpvraag.archief %}
+            <p>Foto niet meer beschikbaar.</p>
+        {% else %}
+        <div class="image">
+            {% if hulpvraag.bestandsnaam|slice(-4) in ['.pdf', '.bin'] %}
+                <p><a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_openbrief', {'hulpvraagUuid': hulpvraag.uuid}) }}" class="button">Download</a></p>
+            {% else %}
+                <p id="image-detail"><a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_openbrief', {'hulpvraagUuid': hulpvraag.uuid}) }}">
+                <img src="{{ image.src(hulpvraag, 'thumb-large') }}" alt="" id="image"></a></p>
+                <div class="toolbar">Roteren:
+                    <button type="button" id="rotate-left">Linksom</button>
+                    <button type="button" id="rotate-original">Origineel</button>
+                    <button type="button" id="rotate-right">Rechtsom</button>
+                </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="meta-wrapper {% if hulpvraag.status > 0 %}inactief{% endif %}">
+
+        <section class="meta">
+            <p>Vraag: {% if hulpvraag.vraag is not empty %}<b>“{{ hulpvraag.vraag }}”</b>{% else %}<i>geen</i>{% endif %}</p>
+            <p>Telefoonnummer: <b>{{ hulpvraag.telefoon }}</b> </p>
+            <p>Status: <b>{% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.status.twig' with {'status': hulpvraag.status} %}</b></p>
+            <p>Medewerker: {% if hulpvraag.toegewezenHulpverlener is not empty %}<b>{{ hulpvraag.toegewezenHulpverlener.naam }}</b>{% else %}<i>Nog niet toegewezen</i>{% endif %}</p>
+            {% if hulpvraag.reactieVanHulpverlener %}
+                <p>Notitie: <b>{{ hulpvraag.reactieVanHulpverlener }}</b></p>
+            {% endif %}
+
+            {% if hulpvraag.verzondenSmsBerichten is not empty %}
+                {% for record in hulpvraag.verzondenSmsBerichten %}
+                    <p>Verzonden SMS: <b>{{ record.bericht }}</b></p>
+                {% endfor %}
+            {% endif %}
+        </section>
+
+        {% if hulpvraag.status < 1 %}
+            <section class="acties">
+                {% if hulpverlener == hulpvraag.toegewezenHulpverlener %}
+                    <span class="success"><button id="complete">Afronden</button></span>
+                    <button id="noresponse">Niet bereikbaar</button>
+                    <button id="trash">Verwijderen</button>
+                {% endif %}
+            </section>
+            <section class="acties opnieuwtoewijzen">
+                <h3>Toewijzen aan een ander</h3>
+                {{ form_start(reassignForm) }}
+                {{ form_errors(reassignForm) }}
+
+
+                <label>Aan {{ form_widget(reassignForm.hulpverlener) }}</label>
+                <label>Bericht {{ form_widget(reassignForm.bericht, {'attr': {'maxlength': 1024 }}) }}</label>
+                {{ form_widget(reassignForm.submitReassign, {label:'Toewijzen'}) }}
+                {{ form_end(reassignForm) }}
+            </section>
+        {% endif %}
+
+        {% if hulpvraag.hulpverlenerToewijzingen is not empty %}
+            <section class="acties toewijzingen">
+                <h3>Historie</h3>
+                <ul>
+                    {% for toewijzing in hulpvraag.hulpverlenerToewijzingen %}
+                        <li>
+                            <span class="datum">{% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.tijdstip.twig' with {'tijdstip': toewijzing.datumtijd} %}</span>
+                            {{ toewijzing.info }} aan
+                            <span class="naam">{{ toewijzing.hulpverlener.naam }}</span>
+                            {% if toewijzing.bericht is not empty %}
+                            met bericht: <span class="bericht">{{ toewijzing.bericht }}</span>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <section class="acties eigenschappen">
+                <h3>Eigenschappen</h3>
+                {{ form_start(metadataForm) }}
+                    <label>Afzender {{ form_widget(metadataForm.afzender, {'attr': {'list': 'afzenders'}}) }}
+                        <datalist id="afzenders">
+                            {% for afzender in afzenders %}
+                                <option name="{{ afzender }}">{{ afzender }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </label>
+                    <label>Tags {{ form_widget(metadataForm.tags, {'attr': {'data-list': tags|join(', ')}}) }}</label>
+                    <button type="submit">Opslaan</button>
+                {{ form_end(metadataForm) }}
+            </section>
+        {% endif %}
+    </div>
+
+</main>
+<div id="modal"></div>
+{% endblock %}
+
+{% block scripts %}
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="{{ asset('bundles/gemeenteamsterdambrievenhulp/js/jquery.leanModal.min.js') }}"></script>
+    <script src="{{ asset('bundles/gemeenteamsterdambrievenhulp/js/awesomplete.min.js') }}"></script>
+    <script>
+
+    $(document).ready(function() {
+
+        var submitComplete   = '{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_submitcomplete', {'hulpvraagUuid': hulpvraag.uuid}) }}';
+        var submitNoResponse = '{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_sendsms', {'hulpvraagUuid': hulpvraag.uuid}) }}';
+        var submitTrash      = '{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_deletecomplete', {'hulpvraagUuid': hulpvraag.uuid}) }}';
+        var overlay;
+        var modal = $('#modal');
+        var overlayAdded = false;
+
+        function closeModal() {
+            modal.hide().empty();
+            overlay.fadeOut(200);
+        }
+
+        function openModal(submitType) {
+
+            // Overlay
+            if (!overlayAdded) {
+                overlay = $('<div id="lean_overlay"></div>');
+                $('body').append(overlay);
+                overlay.css({
+                    'display': 'block',
+                    opacity: 0
+                }).click(function() {
+                    closeModal();
+                });
+                overlayAdded = true;
+            }
+            overlay.fadeTo(200, .5);
+
+            // Modal
+            $.get(submitType, function(data) {
+                modal.html(data).css({
+                    'display': 'block',
+                    'position': 'absolute',
+                    'opacity': 1,
+                    'z-index': 11000
+                });
+
+                window.scrollTo( 0, 0 );
+
+                /*var modal_height = modal.outerHeight();
+                var modal_width = modal.outerWidth();
+                modal.css({
+                    'margin-left': -(modal_width / 2) + 'px',
+                    'top': '100px'
+                }).find(':input:first').focus();
+                modal.find('.annuleren').click(function() {
+                    closeModal();
+                    return false;
+                });*/
+            });
+
+        }
+
+        $('#complete').click(function() {
+            openModal(submitComplete);
+        });
+
+        $('#noresponse').click(function() {
+            openModal(submitNoResponse);
+        });
+
+        $('#trash').click(function() {
+            openModal(submitTrash);
+        });
+
+        $(document).keyup(function(e) {
+            if (e.which == 27 && modal.is(':visible')) {
+                closeModal();
+            }
+        });
+
+        new Awesomplete(document.getElementById('metadata_form_afzender'), {autoFirst: true});
+        new Awesomplete(document.getElementById('metadata_form_tags'), {
+            autoFirst: true,
+            filter: function(text, input) {
+                return Awesomplete.FILTER_CONTAINS(text, input.match(/[^,]*$/)[0]);
+            },
+            replace: function(text) {
+                var before = this.input.value.match(/^.+,\s*|/)[0];
+                this.input.value = before + text + ', ';
+            }
+        });
+
+        function rotateImage(img, rot) {
+            img.data('rot', rot);
+            img.css({webkitTransform: 'rotate(' + rot + 'deg)', msTransform: 'rotate(' + rot + 'deg)', transform: 'rotate(' + rot + 'deg)'});
+        }
+
+        $('#rotate-left').click(function() {
+            var img = $('#image');
+            var rot = img.data('rot') || 0;
+            rot -= 90;
+            rotateImage(img, rot);
+        });
+
+        $('#rotate-original').click(function() {
+            rotateImage($('#image'), 0);
+        });
+
+        $('#rotate-right').click(function() {
+            var img = $('#image');
+            var rot = img.data('rot') || 0;
+            rot += 90;
+            rotateImage(img, rot);
+        });
+
+    });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% if status == -1 %}
+    <span class="status status--1">Niet toegewezen</span>
+{% elseif status == 0 %}
+    <span class="status status-0">In behandeling</span>
+{% elseif status == 1 %}
+    <span class="status status-1">Afgehandeld</span>
+{% elseif status == 2 %}
+    <span class="status status-2">Niet bereikbaar</span>
+{% elseif status == 3 %}
+    <span class="status status-3">Verwijderd</span>
+{% elseif status == 4 %}
+    <span class="status status-4">ARCHIEF</span>
+{% else %}
+    <span class="status status-onbekend">Onbekend!</span>
+{% endif %}

@@ -1,0 +1,31 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{% block main %}
+<main class="wrapper">
+
+    <section class="login">
+        <div class="form-wrapper">
+            {% if error %}
+                <div class="note error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <form action="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_login') }}" method="post" class="form">
+                <h2>Login</h2>
+                <fieldset class="contactgegevens">
+                    <div class="form-row">
+                        <label for="password">E-mail adres</label>
+                        <input type="text" id="username" name="_username" value="{{ last_username }}">
+                    </div>
+                    <div class="form-row">
+                        <label>Wachtwoord</label>
+                        <input type="password" id="password" name="_password" />
+                    </div>
+                </fieldset>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button>Inloggen</button>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{%- import 'GemeenteAmsterdamBrievenhulpBundle:macros:image.html.twig' as image -%}
+
+{% block main %}
+<main class="wrapper">
+
+    <div class="profiel">
+    {% form_theme form 'GemeenteAmsterdamBrievenhulpBundle:forms:hulpverlener.html.twig' %}
+
+    {% for flashMessage in app.session.flashbag.get('info') %}
+        <p><strong>Yes</strong> {{ flashMessage }}</p>
+    {% endfor %}
+
+    {{ form_start(form, {'attr': {'class': 'form'} }) }}
+        <h2>Profiel</h2>
+        <fieldset class="contactgegevens">
+            <div class="form-row">
+                {{ form_label(form.naam) }}
+                {{ form_widget(form.naam) }}
+                {{ form_errors(form.naam) }}
+            </div>
+            <div class="form-row">
+                {{ form_label(form.organisatie) }}
+                {{ form_widget(form.organisatie) }}
+                {{ form_errors(form.organisatie) }}
+            </div>
+            <div class="form-row">
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div class="form-row">
+                {{ form_label(form.telefoon) }}
+                {{ form_widget(form.telefoon) }}
+                {{ form_errors(form.telefoon) }}
+            </div>
+            <div class="form-row">
+                {{ form_label(form.smssjabloon) }}
+                {{ form_widget(form.smssjabloon) }}
+                {{ form_errors(form.smssjabloon) }}
+            </div>
+            <div class="form-row">
+                {{ form_label(form.updatesPerSms) }}
+                {{ form_widget(form.updatesPerSms) }}
+                {{ form_errors(form.updatesPerSms) }}
+            </div>
+        </fieldset>
+
+        <fieldset class="beschikbaarheid">
+            <h2>Beschikbaar</h2>
+            {{ form_errors(form.beschikbaarheid) }}
+
+            {% for checkbox in form.beschikbaarheid %}
+                <div class="form-row">
+                    {{ form_widget(checkbox) }}
+                    {{ form_label(checkbox) }}
+                </div>
+            {% endfor %}
+        </fieldset>
+
+        <button type="submit">Opslaan</button>
+        {{ form_end(form) }}
+    </div>
+
+    <div class="col-1-2">
+        <section class="hulpvragen kort">
+        <h2>Mijn brieven</h2>
+        {% if hulpvragen %}
+        <table class="table">
+        {% for record in hulpvragen %}
+    <tr>
+        <td>{{ record.inkomstDatumtijd|date('d-m-Y') }}</b> om <b>{{ record.inkomstDatumtijd|date('H:i') }}</td>
+        <td>
+            <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}">
+                <img src="{{ image.src(record, 'thumb-small') }}" alt="">
+            </a>
+        </td>
+        {#<td>{{ record.telefoon }}</td>#}
+        <td><a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}">Details</a></td>
+    </tr>
+    {% endfor %}
+        </table>
+        {% else %}
+            <p>Geen</p>
+        {% endif %}
+
+    <h2>Afgehandelde brieven</h2>
+    {% if hulpvragenAfgehandeld %}
+        <table class="table">
+            {% for record in hulpvragenAfgehandeld %}
+                <tr>
+                    <td>{{ record.inkomstDatumtijd|date('d-m-Y') }}</b> om <b>{{ record.inkomstDatumtijd|date('H:i') }}</td>
+                    <td>
+                        <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}">
+                            <img src="{{ image.src(record, 'thumb-small') }}" alt="">
+                        </a>
+                    </td>
+                    {#<td>{{ record.telefoon }}</td>#}
+                    <td><a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}">Details</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Geen</p>
+    {% endif %}
+        </section>
+    </div>
+    </div>
+</main>
+{% endblock %}

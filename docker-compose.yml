@@ -1,0 +1,41 @@
+version: "3.2"
+
+services:
+    database-postgres:
+      image: postgres:latest
+      expose:
+        - "5402:5432"
+      environment:
+        POSTGRES_PASSWORD: insecure
+        
+    web:
+      build: .
+      ports:
+        - "80:80"
+      links:
+        - database-postgres:database
+        
+      environment:
+        SYMFONY__BRIEVENHULP__DATABASE_HOST: database
+        SYMFONY__BRIEVENHULP__DATABASE_PORT: "5432"
+        SYMFONY__BRIEVENHULP__DATABASE_NAME: "postgres"
+        SYMFONY__BRIEVENHULP__DATABASE_USER: "postgres"
+        SYMFONY__BRIEVENHULP__DATABASE_PASSWORD: "insecure"
+        SYMFONY__BRIEVENHULP__MAILER_TRANSPORT: "smtp"
+        SYMFONY__BRIEVENHULP__MAILER_HOST: "192.168.56.1"
+        SYMFONY__BRIEVENHULP__MAILER_USER: ""
+        SYMFONY__BRIEVENHULP__MAILER_PASSWORD: ""
+        SYMFONY__BRIEVENHULP__MAILER_PORT: "25"
+        SYMFONY__BRIEVENHULP__MAILER_ENCRYPTION: "null" # null, ssl, tls
+        SYMFONY__BRIEVENHULP__SECRET: "insecure" # random
+        SYMFONY__BRIEVENHULP__MAIL_FROM: "service@website-domain"
+        SYMFONY__BRIEVENHULP__MAIL_CC: "service@website-domain"
+        SYMFONY__BRIEVENHULP__RETENTION_POLICY: "P14D"
+        SYMFONY__BRIEVENHULP__REQUEST_CONTEXT_HOST: "website-domain" # domain, scheme and base url for links in e-mails
+        SYMFONY__BRIEVENHULP__REQUEST_CONTEXT_SCHEME: "https"
+        SYMFONY__BRIEVENHULP__REQUEST_CONTEXT_BASE_URL: ""
+        SYMFONY__BRIEVENHULP__MESSAGEBIRD_ENABLE: "false"
+        SYMFONY__BRIEVENHULP__MESSAGEBIRD_API_KEY: "insecure"
+        SYMFONY__BRIEVENHULP__SMS_ORGINATOR: "service-name"
+        SYMFONY__BRIEVENHULP__PIWIK_SITE_ID: "null" # null for no piwik integration
+        SYMFONY__BRIEVENHULP__TRUSTED_PROXIES: "192.168.0.0/16"

@@ -1,0 +1,76 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{% block main %}
+<main class="wrapper create-account">
+
+    {{ form_start(form, {'attr': {'class': 'form'} }) }}
+
+    <div class="form-wrapper">
+        <h2>Bewerk account</h2>
+
+        <div class="form-row">
+            {{ form_label(form.naam) }}
+            {{ form_widget(form.naam) }}
+            {{ form_errors(form.naam) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.organisatie) }}
+            {{ form_widget(form.organisatie) }}
+            {{ form_errors(form.organisatie) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.isActive) }}
+            {{ form_widget(form.isActive) }}
+            {{ form_errors(form.isActive) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.telefoon) }}
+            {{ form_widget(form.telefoon) }}
+            {{ form_errors(form.telefoon) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password) }}
+            {{ form_errors(form.password) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.role ) }}
+            {{ form_widget(form.role) }}
+            {{ form_errors(form.role) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.email ) }}
+            {{ form_widget(form.email) }}
+            {{ form_errors(form.email) }}
+        </div>
+        <div class="form-row">
+            {{ form_label(form.updatesPerSms ) }}
+            {{ form_widget(form.updatesPerSms) }}
+            {{ form_errors(form.updatesPerSms) }}
+        </div>
+    </div>
+    <div class="beschikbaarheid-wrapper">
+        <fieldset class="beschikbaarheid">
+            <h3 class="text-h3">Beschikbaar</h3>
+            {{ form_errors(form.beschikbaarheid) }}
+
+            {% for checkbox in form.beschikbaarheid %}
+                <div class="form-row">
+                    {{ form_widget(checkbox) }}
+                    {{ form_label(checkbox) }}
+                </div>
+            {% endfor %}
+        </fieldset>
+        {#<div class="form-row">
+            {{ form_label(form.beschikbaarheid ) }}
+            {{ form_widget(form.beschikbaarheid) }}
+            {{ form_errors(form.beschikbaarheid) }}
+        </div>#}
+    </div>
+    <div class="form-wrapper">
+        <button type="submit">Opslaan</button>
+    </div>
+    {{ form_end(form) }}
+
+</main>
+{% endblock %}

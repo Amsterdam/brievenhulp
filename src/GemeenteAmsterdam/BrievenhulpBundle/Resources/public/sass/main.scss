@@ -1,0 +1,600 @@
+/*!
+ *  Copyright (C) 2016 X Gemeente
+ *                     X Amsterdam
+ *                     X Onderzoek, Informatie en Statistiek
+ *
+ *  This Source Code Form is subject to the terms of the Mozilla Public
+ *  License, v. 2.0. If a copy of the MPL was not distributed with this
+ *  file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+/////////////////////
+// Main Styles
+/////////////////////
+
+@import "foundation.scss";
+@import "global.scss";
+@import "grid.scss";
+@import "typography.scss";
+@import "mediaqueries.scss";
+@import "awesomplete.scss";
+
+body {
+    @extend .text-body;
+    line-height: 1.7em;
+    color: #555;
+    background: #fff;
+}
+
+$margin-medium: 10px;
+
+header {
+    background: $primary-color;
+    color: #fff;
+    padding: 10px 0 10px;
+    h1 {
+        @extend .text-h1;
+        margin: 20px 0 0 0;
+        line-height: 1em;
+    }
+}
+
+.account {
+    float: right;
+    margin-top: 30px;
+
+    .icon-wrapper {
+        background-color: rgba(255, 255, 255, 0.5);
+        display: inline-block;
+        padding: 4px 8px 0;
+        text-align: center;
+        width: 32px;
+        margin-right: 5px;
+    }
+    .gebruikersnaam {
+        font-size: 23px;
+        font-weight: bold;
+    }
+    .account-link {
+        display: block;
+        font-size: 14px;
+        line-height: 1em;
+        margin-bottom: 5px;
+        text-align: right;
+        text-decoration: none;
+        &:hover { text-decoration: underline; }
+    }
+    @include medium { margin: 10px 0 20px; }
+    @include small { margin: 10px 0 20px; }
+}
+
+main {
+    padding-top: 25px;
+}
+
+.foto-klein {
+    width: 40px;
+    height: 40px;
+    display: block;
+    opacity: 0.5;
+}
+
+.open .foto-klein { opacity: 1; }
+
+.foto-medium {
+
+}
+
+.form {
+
+    h2 { @extend .text-h3; color: $primary-color; }
+
+    input, textarea, select, option {
+        @extend .text-body;
+    }
+    input[type=text],input[type=password],input[type=email],input[type=tel], textarea {
+        width: 100%;
+        border: 1px solid transparent;
+        border-top: none;
+        border-bottom: 1px solid #DDD;
+        padding: 3px 8px;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,.39), 0 -1px 1px #FFF, 0 1px 0 #FFF;
+    }
+    textarea {
+        //width: 100%;
+    }
+    label + textarea {
+        //display: block;
+        padding: 3px 8px;
+        min-height: 180px;
+        vertical-align: top;
+        //width: 50%;
+    }
+    label {
+        cursor: pointer;
+        min-width: 100px;
+        display: inline-block;
+    }
+    .form-row {
+        display: block;
+        @extend .group;
+        margin-bottom: 10px;
+    }
+    fieldset {
+        margin-bottom: $margin-large;
+        padding-bottom: $margin-large;
+        border-bottom: 1px solid #ddd;
+        &:last-of-type {
+            border: 0;
+            margin-bottom: 0;
+        }
+    }
+    .errors {
+        margin-top: 10px;
+        font-size: 12px;
+        li { color: $error-color; }
+    }
+    button {
+        @extend .button;
+        border-bottom: 3px solid darken($primary-color, 10%);
+    }
+}
+
+a.button {
+    @extend .button;
+    border-bottom: 3px solid darken($primary-color, 10%);
+}
+
+#modal {
+    margin-left: 25%;
+    top: 100px;
+    width: 50%;
+    @include small {
+        margin-left: 0;
+        top: 20px;
+        width: 100%;
+    }
+}
+
+.modal-wrapper {
+    //min-width: 40%;
+    //max-width: 75%;
+    padding: 20px;
+    border: red;
+    background: #fff;
+    border-radius: 5px;
+    .annuleren { display: inline-block; margin-left: 10px }
+    textarea { display: block; min-height: 120px; width: 100%; }
+    label { width: 100% }
+}
+
+.create-account {
+    .form-wrapper {
+        @include grid-col(3,5);
+    }
+    .beschikbaarheid-wrapper {
+        @include grid-col(2,5);
+    }
+}
+
+.login {
+    .form-wrapper {
+        @include grid-col(3,5);
+        @include small { @include grid-col(1,1); }
+    }
+}
+
+.error { color: $error-color; }
+.annuleren { color: #888; font-size: 14px; }
+
+.acties {
+    &:not(:last-child) {
+        padding-bottom: 15px;
+        border-bottom: 1px solid #ccc;
+    }
+    h3 {
+        @extend .text-h4;
+        color: $primary-color;
+        margin-top: 20px;
+    }
+    select {
+        display: block;
+        width: 100%;
+        margin: 0 0 10px;
+        padding: 3px;
+    }
+    input, textarea {
+        display: block;
+        @extend .text-body;
+        width: 100%;
+        margin: 0 0 10px;
+        padding: 10px;
+    }
+    label {
+        display: block;
+    }
+    button {
+        @extend .button;
+        border-bottom: 3px solid darken($primary-color, 10%);
+    }
+    .success {
+        button {
+            background: $success-color;
+            border-bottom: 3px solid darken($success-color, 10%);
+        }
+    }
+}
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: $margin-large;
+    td, th {
+        vertical-align: top;
+        text-align: left;
+        //border: 1px solid #eee;
+        padding: 10px 15px;
+    }
+    th {
+        border: 0;
+        color: #fff;
+        background: $primary-color;
+        white-space: nowrap;
+        //font-weight: normal;
+        //text-transform: lowercase;
+    }
+    tr:nth-child(odd) { background: #EBF5F9; }
+    a {
+        color: $link-color;
+        text-decoration: underline;
+    }
+    .referentie {
+        font-size: 16px;
+    }
+    &.afgehandeld {
+        th { background-color: #ccc; }
+        tr:nth-child(odd) { background: #eee; }
+        img { @include grayscale; opacity: 0.5 }
+        .referentie {
+            background: #888;
+        }
+    }
+    &.rooster {
+        td, th { border: 1px solid rgba(0, 0, 0, 0.2) }
+        .dagborder { border-left-width: 2px; border-left-color: rgba(0, 0, 0, 0.5); border-style: solid;}
+    }
+    .dagdeel { width: 50px; }
+}
+
+.vraag {
+    font-family: Georgia, sans-serif;
+    font-style: italic;
+    color: #555;
+    font-size: 24px;
+}
+
+.form-wrapper,
+.header-wrapper,
+.article-wrapper,
+.table-wrapper,
+.hulpvragen-wrapper {
+    @include grid-col(1,1);
+}
+.table-wrapper {
+    overflow-x: auto;
+}
+
+.profiel {
+    @include grid-col(1,2);
+}
+
+.hulpvragen {
+    h2 { @extend .text-h3; color: $primary-color; }
+    .section-header {
+        border-bottom: 2px solid #eee;
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: #777;
+        text-transform: uppercase;
+        padding-bottom: 5px;
+        margin-top: 15px;
+    }
+    &.kort {
+        img { width: 40px; }
+    }
+    @include medium { @include grid-col(1,1); }
+    @include small { @include grid-col(1,1); }
+}
+
+.archief {
+    margin-top: $margin-large;
+    @include grid-col(1,1);
+    h2 { @extend .text-h3; color: $primary-color; }
+    li {
+        color: #888;
+        line-height: 1.8em;
+        display: list-item;
+    }
+    a {
+        color: $link-color;
+        text-decoration: underline;
+    }
+}
+
+.main-logo {
+    width: 320px;
+}
+
+.main-nav {
+    background: $primary-color;
+    li {
+        float: left;
+        font-weight: bold;
+        margin-right: 10px;
+        background: rgba(255,255,255,0.5);
+        a {
+            display: block;
+            padding: 5px 15px;
+            color: rgba(0,0,0,0.5);
+            &:hover {
+                color: #fff;
+            }
+        }
+        &.active {
+            background: #fff;
+            a { color: rgba(0,0,0,0.7); }
+        }
+        @include medium { @include grid-col(1,1); }
+        @include small { @include grid-col(1,1); }
+    }
+}
+.nav-wrapper {
+    @include grid-col(4,5);
+    @include medium { @include grid-col(1,1); }
+    @include small { @include grid-col(1,1); }
+}
+
+.search-wrapper {
+    @include grid-col(1,5);
+    input {
+        display: block;
+        width: 100%;
+        margin: 0;
+        padding: 5px 10px;
+        border: none;
+        line-height: 1.7em;
+        height: 30px;
+        font-weight: normal;
+        font-size: 14px;
+        -webkit-appearance: none;
+    }
+    @include medium { @include grid-col(1,1); }
+    @include small { @include grid-col(1,1); }
+}
+
+.meta-wrapper {
+    @include grid-col(2,5);
+
+    @include medium { @include grid-col(1,1); }
+    @include small { @include grid-col(1,1); }
+}
+
+.foto-wrapper {
+    @include grid-col(3,5);
+
+    @include medium { @include grid-col(1,1); }
+    @include small { @include grid-col(1,1); }
+}
+.meta {
+    background: #ebf5f9;
+    padding: 20px;
+    margin-bottom: 20px;
+    color: rgba(0,0,0,0.8);
+}
+
+.ingediend {
+    @extend .text-h3; color: $primary-color;
+    border-bottom: 2px solid #eee;
+    margin-bottom: 15px;
+    line-height: 2em;
+    padding-bottom: 5px;
+}
+
+.image {
+    a { display: block }
+    img {
+        width: 100%;
+        -webkit-transition: -webkit-transform .2s ease-out;
+        -ms-transition: -ms-transform .2s ease-out;
+        transition: transform .2s ease-out;
+    }
+}
+
+.note {
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background: #ffeeaa;
+    //@extend .group;
+    p {
+        color: rgba(0,0,0,0.5);
+    }
+    &.error {
+        background: rgba(255,0,0,0.1);
+    }
+}
+
+.flash {
+    @extend .wrapper;
+    @extend .fadein;
+
+    margin-top: 20px;
+    ul {
+        @include grid-col(1,1);
+    }
+    li {
+        @extend .note;
+        background: #D5F5D4;
+        margin-bottom: 0;
+        color: rgba(0,0,0,0.5);
+    }
+}
+
+.status {
+    white-space: nowrap;
+    //font-weight: bold;
+    &.status--1 { color: red; }
+    &.status-0 { color: #333; }
+    &.status-1 { color: #69aa0e; }
+    &.status-2 { color: #cf7627; }
+    &.status-3 { color: #aaa; }
+    &.status-4 { color: red; }
+}
+
+.open td {
+    font-weight: bold;
+}
+
+time {
+    white-space: nowrap;
+    .dag { white-space: nowrap; text-transform: capitalize }
+    //.tijd { display: inline-block; margin-left: 4px; font-size: 13px; color: #888; line-height: 1em; }
+}
+
+time.mini {
+    display: block;
+    line-height: 1em;
+    position: relative;
+    top: -2px;
+    .dag, .tijd { display: inline-block; font-size: 12px; color: #888; font-weight: normal; line-height: 1em; }
+    .tijd { margin-left: 10px; }
+    .clock { vertical-align: middle; }
+}
+
+.inactief {
+    .meta {
+        background: #eee;
+        p { color: rgba(0,0,0,0.3); }
+    }
+    img { @include grayscale; }
+}
+
+.opnieuwtoewijzen, .eigenschappen {
+    button {
+        @extend .small-button;
+        background-color: #333;
+        border-bottom-color: #000;
+    }
+}
+
+.add-column {
+    @include small { display: none; }
+}
+
+.referentie {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 2px 8px;
+    line-height: 1.5em;
+    font-size: 19px;
+    font-weight: bold;
+    background: $primary-color;
+    color: #fff;
+}
+
+.telefoon {
+    display: inline-block;
+    background: url(/img/phone.png) no-repeat top left;
+    width: 20px;
+    height: 28px;
+    position: relative;
+    top: 7px;
+}
+.telefoon-wrapper {
+    border-top: 1px solid #eee;
+    text-align: center;
+    font-weight: bold;
+}
+
+.fotorol {
+    margin-bottom: $margin-large;
+    @extend .group;
+    @include grid-row();
+    time { white-space: normal; .dag, .tijd { white-space: normal } }
+}
+
+.polaroid {
+    @include grid-col(1,4);
+    margin-bottom: 20px;
+    h3 { color: $primary-color; background: #ebf5f9; height: 2em; overflow: hidden }
+    a {
+        border: 1px solid #eeeded;
+        box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
+        float: left;
+        padding: 10px;
+        display: block;
+        width: 100%;
+    }
+
+    img {
+        width: 100%;
+        display: block;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    @include medium { @include grid-col(1,2);  h3 { font-size: 14px; } }
+    @include small { @include grid-col(1,1); }
+}
+
+.toolbar { display: block; clear: both; margin-bottom: $margin-large; position: relative; z-index: 2; }
+.toolbar:hover { background: #fff; }
+.paginering {
+    @include grid-col(1,1);
+
+    margin-bottom: 20px;
+
+    .totaal { display: none; }
+    .pagina { color: #555; font-size: 14px; display: inline-block; margin-right: 10px; }
+
+    a {
+        display: inline-block;
+        margin-right: 10px;
+        font-size: 14px;
+        color: $link-color;
+    }
+}
+
+.arrow {
+    background-repeat: no-repeat;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    &.up { background-image: url('/img/up.png');
+        &.active-direction { background-image: url('/img/up-active.png'); }
+    }
+    &.down { background-image: url('/img/down.png');
+        &.active-direction { background-image: url('/img/down-active.png'); }
+    }
+}
+
+.vinkje { color: #55aa55; text-align: center; display: block; font-weight:  bold;}
+.afwezig { color: #888; text-align: center; display: block; font-weight: normal;}
+
+.toewijzingen {
+    h3 {
+        @extend .text-h4;
+        color: $primary-color;
+        margin-top: 20px;
+    }
+    li {
+        font-size :14px;
+        margin-top: 10px;
+        @extend .text-small;
+    }
+    .datum {
+        color: $meta-color;
+        display: block;
+        font-weight: bold;
+        @extend .text-small;
+        margin-bottom: 0;
+    }
+}

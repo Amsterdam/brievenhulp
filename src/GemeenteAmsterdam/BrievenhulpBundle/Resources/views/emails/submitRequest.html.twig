@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <style type="text/css">
+body { font-family: Arial; line-height: 1.5em; }
+        </style>
+    </head>
+    <body>
+        <p>Beste {{ hulpverlener.naam }},</p>
+        <p>Via Snapdebrief.nl is er een nieuwe brief ({{ hulpvraag.referentie.id }}) binnengekomen die aan jou is toegewezen. Klik op onderstaande link om hem te bekijken.</p>
+        <p><a href="{{ url('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': hulpvraag.uuid}) }}">Bekijk brief</a></p>
+    </body>
+</html>

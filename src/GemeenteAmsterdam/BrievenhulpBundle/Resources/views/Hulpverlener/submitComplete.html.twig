@@ -1,0 +1,18 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:modal.html.twig' %}
+
+{% block modal %}
+
+    <div class="modal-wrapper">
+        {{ form_start(form, {'attr': {'class': 'form'}, 'action': path('gemeenteamsterdam_brievenhulp_hulpverlener_submitcomplete', {'hulpvraagUuid':hulpvraag.uuid})}) }}
+        <div class="form-row">
+            <label class="text-h3">Beschrijf kort wat je met deze vraag hebt gedaan
+                {{ form_widget(form.msg) }}
+            </label>
+            {{ form_errors(form.msg) }}
+        </div>
+        <button type="submit">Afronden</button>
+        <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': hulpvraag.uuid}) }}" class="annuleren">Annuleren</a>
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}

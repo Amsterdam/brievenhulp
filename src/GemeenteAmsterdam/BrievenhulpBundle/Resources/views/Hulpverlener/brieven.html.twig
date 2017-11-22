@@ -1,0 +1,101 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{%- import 'GemeenteAmsterdamBrievenhulpBundle:macros:image.html.twig' as image -%}
+
+{% block main %}
+
+<main class="wrapper">
+
+    {% if hulpvragen.count == 0 %}
+
+        <div class="col-1-1">
+            <div class="note">
+                <p><strong>Geen resultaten:</strong> dit telefoonnummer levert geen brieven op.</p>
+            </div>
+        </div>
+
+    {% else %}
+
+        <div class="table-wrapper">
+
+            <table class="table">
+                <tr>
+                    <th class="{{ sortColumn == 'referentie' ? 'active-sort' }}">
+                        Ref.
+                        <a class="arrow up {{ sortColumn == 'referentie' and sortDirection == 'ASC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'referentie', 'sortDirection': 'ASC'}) }}"></a>
+                        <a class="arrow down {{ sortColumn == 'referentie' and sortDirection == 'DESC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'referentie', 'sortDirection': 'DESC'}) }}"></a>
+                    </th>
+                    <th>Brief</th>
+                    <th class="add-column {{ sortColumn == 'datum' ? 'active-sort' }}">
+                        Ingediend
+                        <a class="arrow up {{ sortColumn == 'datum' and sortDirection == 'ASC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'datum', 'sortDirection': 'ASC'}) }}"></a>
+                        <a class="arrow down {{ sortColumn == 'datum' and sortDirection == 'DESC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'datum', 'sortDirection': 'DESC'}) }}"></a>
+                    </th>
+                    {#<th class="{{ sortColumn == 'datum' ? 'active-sort' }}">
+                        Afgehandeld
+                        <a class="arrow up {{ sortColumn == 'datum' and sortDirection == 'ASC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'datum', 'sortDirection': 'ASC'}) }}"></a>
+                        <a class="arrow down {{ sortColumn == 'datum' and sortDirection == 'DESC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'datum', 'sortDirection': 'DESC'}) }}"></a>
+
+                    </th>#}
+                    <th class="add-column {{ sortColumn == 'telefoon' ? 'active-sort' }}">
+                        Tel.
+                        <a class="arrow up {{ sortColumn == 'telefoon' and sortDirection == 'ASC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'telefoon', 'sortDirection': 'ASC'}) }}"></a>
+                        <a class="arrow down {{ sortColumn == 'telefoon' and sortDirection == 'DESC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'telefoon', 'sortDirection': 'DESC'}) }}"></a>
+                    </th>
+                    <th class="add-column {{ sortColumn == 'hulpverlener' ? 'active-sort' }}">
+                        Hulpverlener
+                        <a class="arrow up {{ sortColumn == 'hulpverlener' and sortDirection == 'ASC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'hulpverlener', 'sortDirection': 'ASC'}) }}"></a>
+                        <a class="arrow down {{ sortColumn == 'hulpverlener' and sortDirection == 'DESC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'hulpverlener', 'sortDirection': 'DESC'}) }}"></a>
+                    </th>
+                    <th class="add-column {{ sortColumn == 'organisatie' ? 'active-sort' }}">
+                        Organisatie
+                        <a class="arrow up {{ sortColumn == 'organisatie' and sortDirection == 'ASC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'organisatie', 'sortDirection': 'ASC'}) }}"></a>
+                        <a class="arrow down {{ sortColumn == 'organisatie' and sortDirection == 'DESC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'organisatie', 'sortDirection': 'DESC'}) }}"></a>
+                    </th>
+                    <th class="add-column {{ sortColumn == 'status' ? 'active-sort' }}">
+                        Status
+                        <a class="arrow up {{ sortColumn == 'status' and sortDirection == 'ASC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'status', 'sortDirection': 'ASC'}) }}"></a>
+                        <a class="arrow down {{ sortColumn == 'status' and sortDirection == 'DESC' ? 'active-direction' }}" href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'sortColumn': 'status', 'sortDirection': 'DESC'}) }}"></a>
+                    </th>
+                    <th>Details</th>
+                </tr>
+                {% for record in hulpvragen %}
+                {% set link %}{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}{% endset %}
+                <tr {% if record.status == 0 %}class="open"{% endif %}>
+                    <td>{% if null != record.referentie %}<a href="{{ link }}"><span class="referentie">{{ record.referentie.id }}</span></a>{% else %}-{% endif %}</td>
+                    <td>
+                        <a href="{{ link }}">
+                            <img src="{{ image.src(record, 'thumb-small') }}" alt="" class="foto-klein">
+                        </a>
+                    </td>
+                    <td class="add-column">{% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.tijdstip.twig' with {'tijdstip': record.inkomstDatumtijd} %}</td>
+                    {#<td>{% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.tijdstip.twig' with {'tijdstip': record.eindDatumtijd} %}</td>#}
+                    <td class="add-column">{{ record.telefoon }}</td>
+                    <td class="add-column">{% if record.toegewezenHulpverlener is not empty  %}{{ record.toegewezenHulpverlener.naam }}{% else %}<span style="color: red">Nog niet toegewezen</span>{% endif %}</td>
+                    <td class="add-column">{% if record.toegewezenHulpverlener is not empty  %}{{ record.toegewezenHulpverlener.organisatie }}{% endif %}</td>
+                    <td class="add-column">
+                        {% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.status.twig' with {'status': record.status} %}
+                        {% if record.eindDatumtijd is not empty %}{% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.tijdstip.twig' with {'tijdstip': record.inkomstDatumtijd, 'mini': true } %}{% endif %}
+                    </td>
+                    <td><a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}">Details</a></td>
+                </tr>
+                {% endfor %}
+            </table>
+
+            <nav class="paginering">
+                <span class="totaal">Totaal: {{ hulpvragen|length }} brieven</span>
+
+                {% if page > 1 %}
+                    <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'page': page - 1, 'sortColumn': sortColumn, 'sortDirection': sortDirection}) }}">← Vorige pagina</a>
+                {% endif %}
+                <span class="pagina">Pagina <b>{{ page }}</b> / <b>{{ numberOfPages }}</b></span>
+                {% if page < numberOfPages %}
+                    <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_brieven', {'page': page + 1, 'sortColumn': sortColumn, 'sortDirection': sortDirection}) }}">Volgende pagina →</a>
+                {% endif %}
+            </nav>
+        </div>
+
+    {% endif %}
+
+</main>
+{% endblock %}

@@ -1,0 +1,4 @@
+gemeente_amsterdam_brievenhulp:
+    resource: "@GemeenteAmsterdamBrievenhulpBundle/Controller/"
+    type:     annotation
+    prefix:   /

@@ -1,0 +1,43 @@
+{% extends 'GemeenteAmsterdamBrievenhulpBundle:master:hulpverlener.html.twig' %}
+
+{% block main %}
+
+<main class="wrapper">
+
+    <section class="archief">
+
+    <h2>Archief</h2>
+
+    {% if hulpvragen is not empty %}
+        <ul>
+            {% for record in hulpvragen %}
+                <li>
+                    {% if record.toegewezenHulpverlener %}
+                        <b>{{ record.toegewezenHulpverlener.naam }}</b>
+                    {% endif %}
+                    op
+                    {% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.tijdstip.twig' with {'tijdstip': record.eindDatumtijd} %} naar status
+                    <b>{% include 'GemeenteAmsterdamBrievenhulpBundle:master:partial.status.twig' with {'status': record.status} %}</b>
+                    &nbsp;
+                    <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_detail', {'hulpvraagUuid': record.uuid}) }}">Details</a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <nav class="paginering">
+            <span class="totaal">Totaal: {{ hulpvragen|length }} brieven</span>
+
+            {% if page > 1 %}
+                <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_archief', {'page': page - 1, 'sortColumn': sortColumn, 'sortDirection': sortDirection}) }}">← Vorige pagina</a>
+            {% endif %}
+            <span class="pagina">Pagina <b>{{ page }}</b> / <b>{{ numberOfPages }}</b></span>
+            {% if page < numberOfPages %}
+                <a href="{{ path('gemeenteamsterdam_brievenhulp_hulpverlener_archief', {'page': page + 1, 'sortColumn': sortColumn, 'sortDirection': sortDirection}) }}">Volgende pagina →</a>
+            {% endif %}
+        </nav>
+
+    {% endif %}
+    </section>
+
+</main>
+{% endblock %}

@@ -1,0 +1,17 @@
+{
+  "name": "Snap de Brief",
+  "short_name": "SnapDeBrief",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "898x898",
+      "type": "image/png",
+      "density": 1
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#0098CD"
+}
