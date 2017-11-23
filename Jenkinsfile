@@ -50,7 +50,7 @@ if (BRANCH == "master") {
             tryStep "deployment", {
                 build job: 'Subtask_Openstack_Playbook',
                 parameters: [
-                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance_acc'],
+                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance_app'],
                     [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-brievenhulp.yml'],
                 ]
             }
