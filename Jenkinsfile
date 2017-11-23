@@ -44,4 +44,16 @@ if (BRANCH == "master") {
             }
         }
     }
+
+    node {
+        stage("Deploy to ACC") {
+            tryStep "deployment", {
+                build job: 'Subtask_Openstack_Playbook',
+                parameters: [
+                    [$class: 'StringParameterValue', name: 'INVENTORY', value: 'acceptance'],
+                    [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-projectplanning.yml'],
+                ]
+            }
+        }
+    }
 }
