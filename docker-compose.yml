@@ -3,7 +3,7 @@ version: "3.2"
 services:
     database-postgres:
       image: postgres:latest
-      expose:
+      ports:
         - "5402:5432"
       environment:
         POSTGRES_PASSWORD: insecure
@@ -11,7 +11,7 @@ services:
     web:
       build: .
       ports:
-        - "80:80"
+        - "8081:80"
       links:
         - database-postgres:database
         
