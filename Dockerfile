@@ -38,13 +38,10 @@ RUN rm /etc/nginx/conf.d/default.conf \
 
 RUN php composer.phar install -d brievenhulp/ --prefer-dist --no-scripts
 
-# Cron jobs placed in /var/spool/cron - system wide and /etc/cron.d did not work (?)
-COPY Docker/brievenhulp.cron /var/spool/cron/crontabs/root
-
 # redirect logging to stderr
 #RUN touch /var/log/cron.log \
 # && chmod ugo+rwx /var/log/cron.log
-# RUN mkdir -p brievenhulp/var/logs \ 
+# RUN mkdir -p brievenhulp/var/logs \
 # && ln -s /dev/stderr brievenhulp/var/logs/dev.log \
 # && ln -s /dev/stderr brievenhulp/var/logs/prod.log \
 # && ln -s /dev/stderr /var/log/php7.0-fpm.log \
@@ -53,3 +50,6 @@ COPY Docker/brievenhulp.cron /var/spool/cron/crontabs/root
 # run
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 CMD /docker-entrypoint.sh
+
+# Cron jobs placed in /var/spool/cron - system wide and /etc/cron.d did not work (?)
+COPY Docker/brievenhulp.cron /var/spool/cron/crontabs/root
