@@ -2,19 +2,18 @@ version: "3.2"
 
 services:
     database-postgres:
-      image: postgres:latest
+      image: postgres:9-alpine
       ports:
         - "5402:5432"
       environment:
         POSTGRES_PASSWORD: insecure
-        
+
     web:
       build: .
       ports:
-        - "8081:80"
+        - "80:80"
       links:
         - database-postgres:database
-        
       environment:
         SYMFONY__BRIEVENHULP__DATABASE_HOST: database
         SYMFONY__BRIEVENHULP__DATABASE_PORT: "5432"
