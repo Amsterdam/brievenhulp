@@ -41,6 +41,7 @@ if (BRANCH == "master") {
                 def image = docker.image("build.datapunt.amsterdam.nl:5000/fixxx/brievenhulp:${env.BUILD_NUMBER}")
                 image.pull()
                 image.push("acceptance")
+                image.push("production")
             }
         }
     }
