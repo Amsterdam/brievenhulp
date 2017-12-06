@@ -58,4 +58,33 @@ if (BRANCH == "master") {
             }
         }
     }
+
+
+    stage('Waiting for approval') {
+        slackSend channel: '#ci-channel', color: 'warning', message: 'Snap de Brief is waiting for Production Release - please confirm'
+        input "Deploy to Production?"
+    }
+
+    node {
+        stage('Push production image') {
+            tryStep "image tagging", {
+                def image = docker.image("build.app.amsterdam.nl:5000/fixxx/brievenhulp:${env.BUILD_NUMBER}")
+                image.pull()
+                image.push("production")
+                image.push("latest")
+            }
+        }
+    }
+
+    node {
+        stage("Deploy") {
+            tryStep "deployment", {
+                build job: 'Subtask_Openstack_Playbook',
+                parameters: [
+                        [$class: 'StringParameterValue', name: 'INVENTORY', value: 'production_app'],
+                        [$class: 'StringParameterValue', name: 'PLAYBOOK', value: 'deploy-brievenhulp.yml'],
+                ]
+            }
+        }
+    }
 }
