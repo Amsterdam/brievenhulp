@@ -29,6 +29,7 @@ parameters:
    messagebird_accountkey: ${SYMFONY__BRIEVENHULP__MESSAGEBIRD_API_KEY}
    messagebird_enable: ${SYMFONY__BRIEVENHULP__MESSAGEBIRD_ENABLE}
    sms_originator: ${SYMFONY__BRIEVENHULP__SMS_ORGINATOR}
+   piwik_site_id: ${SYMFONY__BRIEVENHULP__PIWIK_SITE_ID}
    sms_disable: false
    trusted_proxies:
         - 127.0.0.1
