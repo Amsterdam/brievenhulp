@@ -6,7 +6,7 @@ server {
 server {
   listen 80 default;
   listen [::]:80 default;
-  server_name acc.snapdebrief.nl;
+  server_name www.snapdebrief.nl;
 
   root /srv/web/brievenhulp/web;
   index index.html;
